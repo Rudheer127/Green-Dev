@@ -222,6 +222,7 @@ Millions of student developers and global hackathon participants need an accessi
 - **CORS Policies:** API routes will restrict CORS solely to the recognized frontend origin header.
 - **Data Access:** DynamoDB enforces a locked least-privilege IAM configuration—explicit actions only mapping to the API Gateway Lambda identity.
 - **Bucket Security:** S3 reporting buckets remain strictly private. Document delivery functions exclusively through auto-expiring (1 hour TTL) pre-signed URLs.
+- **Local API Keys:** Any user-provided credentials (e.g., Personal Access Tokens for deeper scanning) must remain local to the client session or be passed securely and never stored persistently on the server.
 
 ### Reliability & Scalability
 - **Environment Boot** Apply provisioned concurrency to heavy Lambdas or incorporate warm-start pings to prevent unmanageable cold starts damaging user experience.
