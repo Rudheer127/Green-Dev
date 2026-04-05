@@ -82,16 +82,21 @@ function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
 
 function DarkModeToggle() {
   const { theme, setTheme } = useTheme();
+
+  // Default to dark mode on server
+  const isDark = theme === 'dark' || theme === undefined;
+
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      suppressHydrationWarning
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       className={cn(
         'w-10 h-10 flex items-center justify-center rounded-[var(--radius-md)] transition-colors',
         'text-[var(--color-text-muted)] hover:bg-[var(--color-surface-offset)] hover:text-[var(--color-text)]'
       )}
     >
-      {theme === 'dark' ? (
+      {isDark ? (
         <Sun className="w-4 h-4" aria-hidden="true" />
       ) : (
         <Moon className="w-4 h-4" aria-hidden="true" />

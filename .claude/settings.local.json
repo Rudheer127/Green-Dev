@@ -14,7 +14,17 @@
       "mcp__playwright__browser_type",
       "mcp__playwright__browser_click",
       "Bash(grep -n \"FORMATTING RULES\" src/prompts/*.ts)",
-      "Bash(curl -s http://localhost:3001/api/analyze -X OPTIONS)"
+      "Bash(curl -s http://localhost:3001/api/analyze -X OPTIONS)",
+      "Bash(netstat -ano)",
+      "Bash(powershell -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_orce }\")",
+      "Bash(taskkill /F /FI 'LocalPort eq 3000')",
+      "Bash(taskkill /PID 57248 /F)",
+      "Bash(taskkill /PID 276 /F)",
+      "Bash(kill -9 276)",
+      "Bash(tasklist)",
+      "Bash(xargs kill:*)",
+      "Bash(curl -s http://localhost:3002/signin)",
+      "Bash(curl -s http://localhost:3002)"
     ]
   }
 }
