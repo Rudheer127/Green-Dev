@@ -43,7 +43,7 @@ export default function ScanningPage() {
   const doneRef = useRef(false);
 
   useEffect(() => {
-    if (!repoUrl || !deploymentConfig.awsService) {
+    if (!repoUrl || !deploymentConfig.cloudProvider) {
       router.replace('/');
     }
   }, [repoUrl, deploymentConfig, router]);
@@ -82,6 +82,7 @@ export default function ScanningPage() {
     abortRef.current = controller;
 
     async function runAnalysis() {
+      const startTime = Date.now();
       try {
         const res = await fetch('/api/analyze', {
           method: 'POST',
@@ -89,19 +90,42 @@ export default function ScanningPage() {
           body: JSON.stringify({ repoUrl, deploymentConfig }),
           signal: controller.signal,
         });
-        const json = await res.json();
-        if (json.success && json.data) {
+
+        const json = await res.json().catch(() => null);
+
+        if (!res.ok) {
+          if (res.status === 403) {
+            setError('GitHub Rate Limit Exceeded. Please provide a token or try again later.');
+          } else if (res.status === 404 || res.status === 422) {
+            setError('Repository not found or invalid. Please ensure it is public and url is correct.');
+          } else if (res.status === 503 || res.status === 504 || json?.error?.includes('Bedrock')) {
+            setError('AI Service (Bedrock) is currently unavailable or timed out. Please try again.');
+          } else if (res.status === 429) {
+            setError('Rate limit reached. Please try again later.');
+          } else {
+            setError(json?.error || `Analysis failed (${res.status}). Please try again.`);
+          }
+          return;
+        }
+
+        if (json && json.success && json.data) {
+          // Ensure we show at least a few steps for UX feel
+          const elapsed = Date.now() - startTime;
+          const remaining = Math.max(0, 5000 - elapsed);
+          
+          await new Promise(r => setTimeout(r, remaining));
+          
           doneRef.current = true;
           setActiveStep(STEPS.length);
           dispatch({ type: 'SET_SCAN_RESULT', payload: json.data });
           await new Promise((r) => setTimeout(r, 800));
           router.push('/results');
         } else {
-          setError(json.error || 'Analysis failed.');
+          setError(json?.error || 'Analysis failed. Unknown error occurred.');
         }
       } catch (err: any) {
         if (err.name !== 'AbortError') {
-          setError('Analysis failed. Please try again.');
+          setError('Network or server error. Please try again.');
         }
       }
     }

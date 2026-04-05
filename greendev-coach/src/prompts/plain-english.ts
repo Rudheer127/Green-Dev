@@ -9,8 +9,11 @@ Do not use jargon without explaining it. Be encouraging but honest.
 Focus on the 2–3 most impactful changes they can make right now.
 End with a one-sentence motivational close.
 
+CRITICAL INSTRUCTION: Analyze the user's hosting choices against the repository's primary language and topics. If their choices (e.g. Always-on EC2, application hosting) make NO SENSE for the repository (for example, if this is a Machine Learning model training repository, a Jupyter Notebook, or a simple script that is NOT a web app), PLEASE TELL THEM IMMEDIATELY that their hosting options might be wrong or irrelevant for this specific repository, while still providing the rest of the analysis.
+
 Findings:
 - Repo: ${result.repoUrl}
+- Language: ${result.detectedStack.repoLanguage || 'Unknown'} (Topics: ${result.detectedStack.repoTopics?.join(', ') || 'None'})
 - Sustainability Score: ${result.sustainabilityScore}/100 (${result.scoreLabel})
 - Top Issues:
 ${result.issues.slice(0, 3).map((i) => `  • [${i.impact}] ${i.title}`).join('\n')}

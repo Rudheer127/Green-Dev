@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌿 GreenDev Coach
 
-## Getting Started
+> A project-level sustainability advisor for developers. Analyze your GitHub repository, evaluate your AWS deployment choices, and get AI-powered recommendations to reduce your carbon footprint and monthly bill.
 
-First, run the development server:
+## 🚀 Track Alignment: Amazon Sustainability
+GreenDev Coach solves the **Track: Sustainability** challenge by enabling developers to build, run, and scale their projects more efficiently. It bridges the gap between architectural decisions and environmental impact.
 
+---
+
+## ✨ Features
+1.  **Infrastructure Analysis**: We detect Docker/CI/CD patterns and compare your AWS choices (EC2, Lambda, S3) with greener alternatives.
+2.  **Carbon Quantification**: Get estimated CO₂ and cost savings based on real usage patterns extracted from your repository.
+3.  **AI Sustainability Reports**: Four distinct report formats (Plain English, Technical, Pitch-Ready) to help communicate impact to all stakeholders.
+4.  **Actionable Implementation**: We don't just tell you what's wrong; we provide step-by-step implementation guides.
+5.  **Carbon-Aware Regions**: Automatically identifies the "greenest" AWS regions (Oregon, Ireland, Stockholm) for your projects.
+
+---
+
+## 🛠️ Setup & Installation
+
+### Prerequisites
+-   **Node.js 18+**
+-   **AWS Account**: Required for Bedrock (Claude 3.5 Sonnet access)
+-   **Supabase Account**: Required for database persistence and rate limiting
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-repo/greendev-coach.git
+cd greendev-coach
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment
+Create a `.env.local` file in the root directory (refer to `.env.example`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# AWS Keys (Required for Bedrock AI)
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_REGION=us-east-1
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# GitHub Token (Optional for public, Required for private)
+GITHUB_TOKEN=...
 
-## Learn More
+# Supabase Keys (Required for persistence)
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Initialize Database
+Go to your Supabase SQL Editor and run the contents of `supabase.sql` to create the `scans` and `rate_limits` tables.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Run Development Server
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🏗️ Architecture
+-   **Frontend**: Next.js 16 (App Router), Tailwind CSS, Framer Motion, Radix UI.
+-   **Analysis Engines**: Modular TypeScript engines that parse Dockerfiles, YAML workflows, and package metadata.
+-   **AI Stack**: AWS Bedrock (Anthropic Claude 3.5 Sonnet) for intelligent report generation.
+-   **Backend**: Supabase (PostgreSQL) for persistence and infrastructure monitoring.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🌱 Sustainable Engineering
+-   **Region Awareness**: Promotes Stockholm, Ireland, and Oregon for their high renewable energy grid percentage.
+-   **Compute Optimization**: Prioritizes Serverless/Fargate workflows over idle EC2 instance configurations.
+-   **CI Efficiency**: Recommends dependency caching and PR-only triggers to reduce wasted CI compute energy.
+
+---
+
+## 📝 License
+MIT License. Created for the **Amazon Sustainability Track Hackathon**.

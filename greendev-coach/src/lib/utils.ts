@@ -19,9 +19,17 @@ export function sleep(ms: number): Promise<void> {
 
 export function parseGitHubUrl(url: string): { owner: string; repo: string } | null {
   try {
-    const parsed = new URL(url);
-    if (parsed.hostname !== 'github.com') return null;
-    const parts = parsed.pathname.replace(/^\//, '').replace(/\/$/, '').split('/');
+    let processUrl = url.trim();
+    if (!/^https?:\/\//i.test(processUrl)) {
+      processUrl = 'https://' + processUrl;
+    }
+    const parsed = new URL(processUrl);
+    if (!parsed.hostname.includes('github.com')) return null;
+    
+    let pathname = parsed.pathname.replace(/^\//, '').replace(/\/$/, '');
+    pathname = pathname.replace(/\.git$/, ''); // remove .git if present
+    
+    const parts = pathname.split('/');
     if (parts.length < 2 || !parts[0] || !parts[1]) return null;
     return { owner: parts[0], repo: parts[1] };
   } catch {

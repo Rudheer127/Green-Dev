@@ -8,10 +8,14 @@ const GITHUB_API_BASE = 'https://api.github.com';
 
 function getHeaders(): HeadersInit {
   const headers: HeadersInit = {
-    Accept: 'application/vnd.github.v3+json',
+    Accept: 'application/vnd.github+json',
   };
-  if (process.env.GITHUB_TOKEN) {
-    headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  const token = process.env.GITHUB_TOKEN;
+  // Support both classic tokens (ghp_*) and OAuth tokens
+  if (token && !token.startsWith('your_')) {
+    // Classic tokens use 'token' prefix, OAuth tokens use 'Bearer'
+    const prefix = token.startsWith('ghp_') ? 'token' : 'Bearer';
+    headers['Authorization'] = `${prefix} ${token}`;
   }
   return headers;
 }

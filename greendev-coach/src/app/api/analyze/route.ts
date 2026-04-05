@@ -5,7 +5,7 @@ import { analyzeCICD } from '@/engines/ci-analysis';
 import { analyzeDocker } from '@/engines/docker-analysis';
 import { analyzeAssets } from '@/engines/asset-analysis';
 import { analyzeCompute, analyzeRegion } from '@/engines/compute-analysis';
-import { calculateScore, calculateBeforeAfter } from '@/engines/scorer';
+import { calculateScore, calculateBeforeAfter, calculateSubscores } from '@/engines/scorer';
 import { matchRecommendations } from '@/data/recommendations';
 import { invokeClaude } from '@/lib/bedrock';
 import { buildPlainEnglishPrompt, FALLBACK_TEXT as PE_FALLBACK } from '@/prompts/plain-english';
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!deploymentConfig?.awsService || !deploymentConfig?.region) {
+    if (!deploymentConfig?.cloudProvider || !deploymentConfig?.region) {
       return NextResponse.json(
         { success: false, data: null, error: 'Missing required deployment configuration fields.' },
         { status: 400 }
@@ -57,16 +57,20 @@ export async function POST(req: NextRequest) {
         .eq('ip', ip)
         .single();
 
+      const RATE_LIMIT_MAX = 50;          // scans per window
+      const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
       if (rateData) {
         const windowStart = new Date(rateData.window_start);
-        const hourAgo = new Date(Date.now() - 60 * 60 * 1000);
-        if (windowStart > hourAgo && rateData.count >= 10) {
+        const windowExpiry = new Date(Date.now() - RATE_LIMIT_WINDOW_MS);
+        if (windowStart > windowExpiry && rateData.count >= RATE_LIMIT_MAX) {
           return NextResponse.json(
             { success: false, data: null, error: 'Rate limit reached. Try again in an hour.' },
             { status: 429 }
           );
         }
-        if (windowStart <= hourAgo) {
+        if (windowStart <= windowExpiry) {
+          // Window expired — reset
           await supabaseAdmin.from('rate_limits').upsert({ ip, count: 1, window_start: new Date() });
         } else {
           await supabaseAdmin.from('rate_limits').update({ count: rateData.count + 1 }).eq('ip', ip);
@@ -83,14 +87,16 @@ export async function POST(req: NextRequest) {
 
     // Use mock if flag set
     if (process.env.NEXT_PUBLIC_USE_MOCK === 'true') {
-      return NextResponse.json({ success: true, data: { ...MOCK_RESULT, scanId }, error: null });
+      return NextResponse.json({ success: true, data: { ...MOCK_RESULT, scanId, isMock: true }, error: null });
     }
 
     // 3. Fetch repo data
+    console.log(`[API /analyze] Target: ${owner}/${repo}`);
     const [treeResult, metaResult] = await Promise.all([
       fetchRepoTree(owner, repo),
       fetchRepoMeta(owner, repo),
     ]);
+    console.log(`[API /analyze] Tree fetch: ${treeResult.success ? 'SUCCESS' : 'FAILED'}`);
 
     if (!treeResult.success) {
       return NextResponse.json({ success: false, data: null, error: treeResult.error }, { status: 422 });
@@ -135,8 +141,11 @@ export async function POST(req: NextRequest) {
       ...regionIssues,
     ];
 
-    // 6. Score and match recommendations
+    console.log(`[API /analyze] Found ${allIssues.length} issues across all engines.`);
+
+    // 6. Score, subscores, and match recommendations
     const { score, label } = calculateScore(allIssues);
+    const subscores = calculateSubscores(allIssues, deploymentConfig);
     const recommendations = matchRecommendations(allIssues);
     const { before, after } = calculateBeforeAfter(deploymentConfig as any, allIssues);
 
@@ -148,11 +157,13 @@ export async function POST(req: NextRequest) {
       scannedAt: new Date().toISOString(),
       sustainabilityScore: score,
       scoreLabel: label,
+      subscores,
       issues: allIssues,
       recommendations,
       before,
       after,
       detectedStack: {
+        cloudProvider: deploymentConfig?.cloudProvider || 'Auto-Detect / Unknown',
         hasDockerfile,
         hasGithubActions: workflowPaths.length > 0,
         ciTriggerCount: workflowPaths.length,
@@ -170,16 +181,20 @@ export async function POST(req: NextRequest) {
               }
             })()
           : undefined,
+        repoLanguage: metaResult.data?.language,
+        repoTopics: metaResult.data?.topics,
       },
     };
 
-    // 8. Generate AI reports in parallel with fallbacks
+    console.log('[API /analyze] Invoking Bedrock for reports...');
+    const startTimeBedrock = Date.now();
     const [plainEnglish, technical, sustainability, pitch] = await Promise.all([
       invokeClaudeSafe(buildPlainEnglishPrompt(partialResult as AnalysisResult), PE_FALLBACK.replace('{score}', String(score)).replace('{count}', String(allIssues.length))),
       invokeClaudeSafe(buildTechnicalPrompt(partialResult as AnalysisResult), TECH_FALLBACK),
       invokeClaudeSafe(buildSustainabilityPrompt(partialResult as AnalysisResult), SUST_FALLBACK.replace('${0}', before.estimatedMonthlyCO2)),
       invokeClaudeSafe(buildPitchPrompt(partialResult as AnalysisResult), PITCH_FALLBACK),
     ]);
+    console.log(`[API /analyze] Bedrock finished in ${Date.now() - startTimeBedrock}ms`);
 
     const result: AnalysisResult = {
       ...partialResult,

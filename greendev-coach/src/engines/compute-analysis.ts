@@ -8,6 +8,8 @@ const TIER3_REGIONS = new Set(['ap-southeast-1', 'ap-northeast-1', 'ap-northeast
 export function analyzeRegion(region: string): Issue[] {
   const issues: Issue[] = [];
 
+  if (region === 'Auto-Detect' || region === 'Auto-Detect / Unknown') return issues;
+
   if (TIER3_REGIONS.has(region)) {
     issues.push({
       id: 'region-high-carbon',
@@ -34,12 +36,12 @@ const OVERSIZED_INSTANCE_PREFIXES = ['m5', 'm6', 'm7', 'c5', 'c6', 'c7', 'r5', '
 
 export function analyzeCompute(config: DeploymentConfig): Issue[] {
   const issues: Issue[] = [];
-  const { awsService, isServerless, instanceType } = config;
+  const { cloudService, isServerless, instanceType } = config;
 
-  // Always-on EC2
-  if (awsService === 'EC2' && !isServerless) {
+  // Always-on VM (EC2 or Compute Engine)
+  if ((cloudService === 'EC2' || cloudService === 'Compute Engine') && !isServerless) {
     issues.push({
-      id: 'compute-always-on-ec2',
+      id: 'compute-always-on-vm',
       category: 'compute',
       title: 'Always-on EC2 instance runs 24/7',
       description:
@@ -67,10 +69,10 @@ export function analyzeCompute(config: DeploymentConfig): Issue[] {
     }
   }
 
-  // ECS without serverless
-  if (awsService === 'ECS' && !isServerless) {
+  // Containers without serverless
+  if ((cloudService === 'ECS' || cloudService === 'Azure App Service') && !isServerless) {
     issues.push({
-      id: 'compute-ecs-no-fargate',
+      id: 'compute-container-no-serverless',
       category: 'compute',
       title: 'ECS running on EC2 instances instead of Fargate',
       description:
