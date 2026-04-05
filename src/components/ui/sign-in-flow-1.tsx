@@ -402,9 +402,9 @@ function MiniNavbar() {
 
   const logoElement = (
     <Link
-      href="/signin"
+      href="/"
       className="relative flex items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      aria-label="Go to sign in"
+      aria-label="GreenDev Coach home"
     >
       <span className="relative w-5 h-5 flex items-center justify-center">
         <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80" />
