@@ -3,7 +3,6 @@
 import React, { useState,useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -416,20 +415,6 @@ function MiniNavbar() {
     { label: 'About', href: '#about' },
   ];
 
-  const signupButtonElement = (
-    <div className="relative group w-full sm:w-auto">
-       <div className="absolute inset-0 -m-2 rounded-full
-                     hidden sm:block
-                     bg-gray-100
-                     opacity-40 filter blur-lg pointer-events-none
-                     transition-all duration-300 ease-out
-                     group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"></div>
-       <a href="/start" className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-gray-100 to-gray-300 rounded-full hover:from-gray-200 hover:to-gray-400 transition-all duration-200 w-full sm:w-auto inline-block text-center">
-         Analyze Repo →
-       </a>
-    </div>
-  );
-
   return (
     <header className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-20
                        flex flex-col items-center
@@ -452,10 +437,6 @@ function MiniNavbar() {
           ))}
         </nav>
 
-        <div className="hidden sm:flex items-center gap-2 sm:gap-3">
-          {signupButtonElement}
-        </div>
-
         <button className="sm:hidden flex items-center justify-center w-8 h-8 text-gray-300 focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
           {isOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -474,16 +455,12 @@ function MiniNavbar() {
             </a>
           ))}
         </nav>
-        <div className="flex flex-col items-center space-y-4 mt-4 w-full">
-          {signupButtonElement}
-        </div>
       </div>
     </header>
   );
 }
 
 export const SignInPage = ({ className }: SignInPageProps) => {
-  const router = useRouter(); // Route hook
   const [initialCanvasVisible, setInitialCanvasVisible] = useState(true);
 
 
