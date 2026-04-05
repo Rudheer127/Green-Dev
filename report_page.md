@@ -1,0 +1,134 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e777]:
+    - banner [ref=e778]:
+      - link "GreenDev Coach home" [ref=e779] [cursor=pointer]:
+        - /url: /
+        - img [ref=e780]:
+          - generic [ref=e783]: ">_"
+        - generic [ref=e784]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e786]:
+        - link "Home" [ref=e788] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e789]:
+          - generic [ref=e790]: /
+          - link "Configure" [ref=e791] [cursor=pointer]:
+            - /url: /analyze
+        - generic [ref=e792]:
+          - generic [ref=e793]: /
+          - link "Results" [ref=e794] [cursor=pointer]:
+            - /url: /results
+        - generic [ref=e795]:
+          - generic [ref=e796]: /
+          - generic [ref=e797]: Report
+      - generic [ref=e798]:
+        - button "Switch to dark mode" [ref=e799] [cursor=pointer]:
+          - img [ref=e800]
+        - button "New Scan" [ref=e802] [cursor=pointer]:
+          - img [ref=e803]
+          - generic [ref=e808]: New Scan
+    - main [ref=e809]:
+      - generic [ref=e810]:
+        - link "Back to Results" [ref=e811] [cursor=pointer]:
+          - /url: /results
+          - img [ref=e812]
+          - text: Back to Results
+        - button "← Start Over" [ref=e814] [cursor=pointer]
+      - heading "AI Sustainability Report" [level=1] [ref=e816]
+      - generic [ref=e817]:
+        - generic [ref=e818]:
+          - generic [ref=e820]:
+            - tablist "Report format" [ref=e821]:
+              - tab "Plain English" [selected] [ref=e822] [cursor=pointer]:
+                - img [ref=e823]
+                - text: Plain English
+              - tab "Technical" [ref=e826] [cursor=pointer]:
+                - img [ref=e827]
+                - text: Technical
+              - tab "Sustainability" [ref=e829] [cursor=pointer]:
+                - img [ref=e830]
+                - text: Sustainability
+              - tab "Pitch-Ready" [ref=e833] [cursor=pointer]:
+                - img [ref=e834]
+                - text: Pitch-Ready
+            - paragraph [ref=e837]: Easy-to-understand summary for any audience
+            - tabpanel "Plain English" [ref=e838]:
+              - generic [ref=e840]:
+                - 'heading "🌱 GreenDev Coach Sustainability Report ### Repository: vercel/next.js | Score: 45/100 — Moderate Impact" [level=3] [ref=e841]'
+                - paragraph [ref=e842]: "---"
+                - heading "What's Going On With Your Project?" [level=3] [ref=e843]
+                - paragraph [ref=e844]: "Great news first: this is a JavaScript web framework project built with React and Next.js, and the sustainability recommendations here are spot-on for this type of repository. This is genuinely a web application codebase, so the hosting and CI (Continuous Integration — the automated system that tests and builds your code every time you make a change) feedback is directly relevant and actionable for you. You're in the right place!"
+                - paragraph [ref=e845]: "---"
+                - heading "The Two or Three Things That Matter Most Right Now" [level=3] [ref=e846]
+                - paragraph [ref=e847]: 1. Your CI pipeline is running too eagerly (HIGH priority) Right now, every single time anyone pushes code to any branch — even a quick experiment or a rough draft — your automated testing and build system kicks off and runs the full suite. Think of it like your oven preheating every time someone walks past the kitchen, not just when you're actually cooking. Adding branch filters (simple rules that tell CI "only run when code is pushed to important branches like main or dev") could save you roughly $2.40 a month and meaningfully reduce wasted computing energy.
+                - paragraph [ref=e848]: "2. CI also runs when you only change documentation (MEDIUM priority) If someone fixes a typo in a README file, your entire automated test suite still fires up — even though no actual code changed. Path filters are a fix for this: they let you say \"if only files in the /docs folder changed, skip the heavy stuff.\" This is a low-effort change with a genuinely meaningful impact on unnecessary energy use, even if the exact dollar savings are hard to pin down right now."
+                - paragraph [ref=e849]: 3. Images aren't optimized for the web (LOW priority) Your repository appears to serve or demonstrate web content, and the analysis flagged that images could be converted to WebP (a modern image format that's roughly 25–35% smaller than JPEGs or PNGs without losing visible quality) and set to lazy load (meaning images only download when a user actually scrolls to them, rather than all at once). This reduces the energy used every time someone loads a page — and at scale, that adds up fast.
+                - paragraph [ref=e850]: "---"
+                - heading "The Bigger Picture" [level=3] [ref=e851]
+                - paragraph [ref=e852]: If you make all of these changes, the estimated impact is $5.70 saved per month and 0.4kg of CO₂ avoided. That might sound small, but this is per month, and popular repositories like Next.js are built and tested thousands of times. These habits — filtering CI runs, skipping unnecessary builds, optimizing assets — are exactly the kind of thinking that separates a thoughtful developer from the rest, and they scale with you as your projects grow.
+                - paragraph [ref=e853]: "---"
+                - paragraph [ref=e854]: "> 💚 Every efficient pipeline you write today is a small act of care for the planet — and the kind of clean, intentional code that future teammates (and future you) will genuinely appreciate."
+          - generic [ref=e857]:
+            - button "Copy Report" [ref=e858] [cursor=pointer]:
+              - img [ref=e859]
+              - text: Copy Report
+            - button "Print / PDF" [ref=e862] [cursor=pointer]:
+              - img [ref=e863]
+              - text: Print / PDF
+            - button "Share" [ref=e866] [cursor=pointer]:
+              - img [ref=e867]
+              - text: Share
+        - generic [ref=e873]:
+          - generic [ref=e874]:
+            - heading "Scan Summary" [level=3] [ref=e875]
+            - generic [ref=e876]:
+              - generic [ref=e877]: "45"
+              - generic [ref=e878]:
+                - paragraph [ref=e879]: /100
+                - generic [ref=e880]: Moderate Impact
+            - generic [ref=e881]:
+              - generic [ref=e882]:
+                - generic [ref=e883]: Repository
+                - generic [ref=e884]: vercel/next.js
+              - generic [ref=e885]:
+                - generic [ref=e886]: Issues found
+                - generic [ref=e887]: "5"
+              - generic [ref=e888]:
+                - generic [ref=e889]: Recommendations
+                - generic [ref=e890]: "4"
+              - generic [ref=e891]:
+                - generic [ref=e892]: Scanned at
+                - generic [ref=e893]: 1:33:46 AM
+          - generic [ref=e894]:
+            - heading "Category Grades" [level=3] [ref=e895]
+            - generic [ref=e896]:
+              - generic [ref=e897]:
+                - generic [ref=e898]: CI/CD Efficiency
+                - generic [ref=e899]: C
+              - generic [ref=e900]:
+                - generic [ref=e901]: Compute Strategy
+                - generic [ref=e902]: A
+              - generic [ref=e903]:
+                - generic [ref=e904]: Stack Weight
+                - generic [ref=e905]: A
+              - generic [ref=e906]:
+                - generic [ref=e907]: Dependency Health
+                - generic [ref=e908]: A
+              - generic [ref=e909]:
+                - generic [ref=e910]: Region Efficiency
+                - generic [ref=e911]: A
+          - generic [ref=e912]:
+            - heading "Potential Savings" [level=3] [ref=e913]
+            - generic [ref=e914]:
+              - generic [ref=e915]:
+                - generic [ref=e916]: CO₂/month
+                - generic [ref=e917]: 0.6kg → 0.4kg
+              - generic [ref=e918]:
+                - generic [ref=e919]: Cost/month
+                - generic [ref=e920]: $8.20 → $5.70
+          - button "View Action Plan →" [ref=e921] [cursor=pointer]
+          - paragraph [ref=e922]: "Scan ID: 647c1636…"

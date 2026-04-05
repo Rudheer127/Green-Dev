@@ -126,6 +126,10 @@ export interface BeforeAfterState {
   monthlyCIRuns: number;
   estimatedMonthlyCost: string;
   estimatedMonthlyCO2: string;
+  energySavings: string;
+  timeSaved: string;
+  bandwidthSaved: string;
+  monthlyRequests: number;
   label: 'before' | 'after';
 }
 

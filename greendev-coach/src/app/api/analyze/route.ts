@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseGitHubUrl } from '@/lib/utils';
-import { fetchRepoTree, fetchFileContent, fetchRepoMeta } from '@/lib/github-client';
+import { fetchRepoTree, fetchFileContent, fetchRepoMeta, fetchCommitActivity } from '@/lib/github-client';
 import { analyzeCICD } from '@/engines/ci-analysis';
 import { analyzeDocker } from '@/engines/docker-analysis';
 import { analyzeAssets } from '@/engines/asset-analysis';
@@ -92,9 +92,10 @@ export async function POST(req: NextRequest) {
 
     // 3. Fetch repo data
     console.log(`[API /analyze] Target: ${owner}/${repo}`);
-    const [treeResult, metaResult] = await Promise.all([
+    const [treeResult, metaResult, commitActivityResult] = await Promise.all([
       fetchRepoTree(owner, repo),
       fetchRepoMeta(owner, repo),
+      fetchCommitActivity(owner, repo),
     ]);
     console.log(`[API /analyze] Tree fetch: ${treeResult.success ? 'SUCCESS' : 'FAILED'}`);
 
@@ -130,7 +131,7 @@ export async function POST(req: NextRequest) {
       Promise.resolve(analyzeDocker(dockerfileResult.data, hasDockerignore)),
       Promise.resolve(analyzeAssets(packageJsonResult.data, tree)),
       Promise.resolve(analyzeCompute(deploymentConfig as any)),
-      Promise.resolve(analyzeRegion(deploymentConfig.region)),
+      Promise.resolve(analyzeRegion(deploymentConfig.region, deploymentConfig.cloudProvider)),
     ]);
 
     const allIssues: Issue[] = [
@@ -147,7 +148,13 @@ export async function POST(req: NextRequest) {
     const { score, label } = calculateScore(allIssues);
     const subscores = calculateSubscores(allIssues, deploymentConfig);
     const recommendations = matchRecommendations(allIssues);
-    const { before, after } = calculateBeforeAfter(deploymentConfig as any, allIssues);
+
+    const repoMetrics = {
+      monthlyCommits: commitActivityResult.data?.monthlyCommits ?? 0,
+      isPrivate: metaResult.data?.isPrivate ?? false,
+      stars: metaResult.data?.stars ?? 0,
+    };
+    const { before, after } = calculateBeforeAfter(deploymentConfig as any, allIssues, repoMetrics);
 
     // 7. Build partial result for prompts
     const partialResult: Omit<AnalysisResult, 'report'> = {

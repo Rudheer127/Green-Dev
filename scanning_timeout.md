@@ -1,0 +1,57 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e259]:
+    - banner [ref=e260]:
+      - link "GreenDev Coach home" [ref=e261] [cursor=pointer]:
+        - /url: /
+        - img [ref=e262]:
+          - generic [ref=e265]: ">_"
+        - generic [ref=e266]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e268]:
+        - link "Home" [ref=e270] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e271]:
+          - generic [ref=e272]: /
+          - link "Configure" [ref=e273] [cursor=pointer]:
+            - /url: /analyze
+        - generic [ref=e274]:
+          - generic [ref=e275]: /
+          - generic [ref=e276]: Scanning
+      - button "Switch to dark mode" [ref=e278] [cursor=pointer]:
+        - img [ref=e279]
+    - main [ref=e281]:
+      - generic [ref=e282]:
+        - generic [ref=e284]:
+          - img [ref=e285]
+          - generic [ref=e289]: https://github.com/astro-js/astro
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - img [ref=e292]
+            - generic [ref=e295]: Fetching repository structure
+          - generic [ref=e296]:
+            - img [ref=e325]
+            - generic [ref=e299]: Analyzing CI/CD pipelines
+          - generic [ref=e300]:
+            - img [ref=e328]
+            - generic [ref=e303]: Checking Docker & container config
+          - generic [ref=e304]:
+            - img [ref=e331]
+            - generic [ref=e307]: Evaluating region & compute choices
+          - generic [ref=e308]:
+            - img [ref=e334]
+            - generic [ref=e311]: Scoring sustainability factors
+          - generic [ref=e312]:
+            - img [ref=e337]
+            - generic [ref=e315]: Generating AI recommendations
+          - generic [ref=e316]:
+            - img [ref=e317]
+            - generic [ref=e319]: Building your report
+        - paragraph [ref=e320]: ~5s
+        - paragraph [ref=e339]: 🌿 us-west-2 (Oregon) runs on 95%+ renewable energy.
+        - generic [ref=e322]:
+          - paragraph [ref=e323]: Repository not found or invalid. Please ensure it is public and url is correct.
+          - button "Try Again" [ref=e324] [cursor=pointer]

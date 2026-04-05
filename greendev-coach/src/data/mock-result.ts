@@ -174,6 +174,10 @@ export const MOCK_RESULT: AnalysisResult = {
     monthlyCIRuns: 120,
     estimatedMonthlyCost: '$18.40',
     estimatedMonthlyCO2: '2.4kg',
+    energySavings: '$0.00',
+    timeSaved: '0 min',
+    bandwidthSaved: '0 MB',
+    monthlyRequests: 5000,
     label: 'before',
   },
   after: {
@@ -181,6 +185,10 @@ export const MOCK_RESULT: AnalysisResult = {
     monthlyCIRuns: 30,
     estimatedMonthlyCost: '$3.20',
     estimatedMonthlyCO2: '0.4kg',
+    energySavings: '$2.40',
+    timeSaved: '240 min',
+    bandwidthSaved: '12.5 MB',
+    monthlyRequests: 5000,
     label: 'after',
   },
   report: {

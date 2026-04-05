@@ -14,6 +14,12 @@ Write a sustainability-focused summary (3–4 paragraphs) covering:
 
 Frame all estimates as directional heuristics, not precise measurements. Use kg CO2 as the unit.
 
+FORMATTING RULES (strictly follow):
+- Do NOT use any markdown formatting: no ##, ###, **, __, *, _, --, ---, or backticks
+- Do NOT use horizontal rules or dividers
+- Write in plain prose paragraphs only
+- Do NOT use bullet lists or numbered lists — write in flowing sentences instead
+
 Findings:
 - Repo: ${result.repoUrl}
 - Score: ${result.sustainabilityScore}/100 (${result.scoreLabel})

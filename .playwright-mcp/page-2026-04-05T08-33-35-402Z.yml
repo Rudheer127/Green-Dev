@@ -1,0 +1,89 @@
+- generic [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e73]:
+    - banner [ref=e74]:
+      - link "GreenDev Coach home" [ref=e75] [cursor=pointer]:
+        - /url: /
+        - img [ref=e76]:
+          - generic [ref=e79]: ">_"
+        - generic [ref=e80]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e82]:
+        - link "Home" [ref=e84] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e85]:
+          - generic [ref=e86]: /
+          - generic [ref=e87]: Configure
+      - generic [ref=e88]:
+        - button "Switch to dark mode" [ref=e89] [cursor=pointer]:
+          - img [ref=e90]
+        - button "New Scan" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+          - generic [ref=e98]: New Scan
+    - main [ref=e99]:
+      - link "Back to Home" [ref=e100] [cursor=pointer]:
+        - /url: /
+        - img [ref=e101]
+        - text: Back to Home
+      - generic "Step 2 of 4" [ref=e104]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: ✓
+          - generic [ref=e108]: Analyze
+        - generic [ref=e111]:
+          - generic [ref=e112]: "2"
+          - generic [ref=e113]: Configure
+        - generic [ref=e116]:
+          - generic [ref=e117]: "3"
+          - generic [ref=e118]: Scanning
+        - generic [ref=e121]:
+          - generic [ref=e122]: "4"
+          - generic [ref=e123]: Results
+      - generic [ref=e210]:
+        - generic [ref=e211]:
+          - heading "CI/CD & Stack" [level=1] [ref=e212]
+          - paragraph [ref=e213]: How is your code built and deployed?
+        - generic [ref=e214]:
+          - paragraph [ref=e215]: CI/CD Tool
+          - generic [ref=e216]:
+            - button "GitHub Actions" [ref=e217] [cursor=pointer]
+            - button "GitLab CI/CD" [ref=e218] [cursor=pointer]
+            - button "Bitbucket Pipelines" [ref=e219] [cursor=pointer]
+            - button "CircleCI" [ref=e220] [cursor=pointer]
+            - button "Jenkins" [ref=e221] [cursor=pointer]
+            - button "Travis CI" [ref=e222] [cursor=pointer]
+            - button "Azure DevOps" [ref=e223] [cursor=pointer]
+            - button "Drone CI" [ref=e224] [cursor=pointer]
+            - button "No CI/CD" [ref=e225] [cursor=pointer]
+            - button "Other" [ref=e226] [cursor=pointer]
+        - generic [ref=e227]:
+          - paragraph [ref=e228]: How often does your pipeline run?
+          - generic [ref=e229]:
+            - button "Every push Runs on every commit — highest energy use" [active] [ref=e230] [cursor=pointer]:
+              - generic [ref=e231]: Every push
+              - generic [ref=e232]: Runs on every commit — highest energy use
+            - button "Pull requests only Only on PR — much more efficient" [ref=e233] [cursor=pointer]:
+              - generic [ref=e234]: Pull requests only
+              - generic [ref=e235]: Only on PR — much more efficient
+            - button "Scheduled (cron) Runs on a timer — predictable cost" [ref=e236] [cursor=pointer]:
+              - generic [ref=e237]: Scheduled (cron)
+              - generic [ref=e238]: Runs on a timer — predictable cost
+            - button "Manual only Triggered manually — lowest energy use" [ref=e239] [cursor=pointer]:
+              - generic [ref=e240]: Manual only
+              - generic [ref=e241]: Triggered manually — lowest energy use
+        - generic [ref=e242]:
+          - generic [ref=e243]: Dependency / build caching configured?
+          - generic [ref=e244]:
+            - generic [ref=e245]: No caching
+            - switch [ref=e246] [cursor=pointer]
+            - generic [ref=e248]: Caching enabled
+        - generic [ref=e250]:
+          - generic [ref=e251]: Frontend Framework
+          - button "Next.js" [ref=e252] [cursor=pointer]:
+            - generic [ref=e253]: Next.js
+            - img [ref=e254]
+        - generic [ref=e256]:
+          - button "← Back" [ref=e257] [cursor=pointer]
+          - button "Analyze My Repo →" [ref=e258] [cursor=pointer]

@@ -1,0 +1,118 @@
+- generic [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e73]:
+    - banner [ref=e74]:
+      - link "GreenDev Coach home" [ref=e75] [cursor=pointer]:
+        - /url: /
+        - img [ref=e76]:
+          - generic [ref=e79]: ">_"
+        - generic [ref=e80]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e82]:
+        - link "Home" [ref=e84] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e85]:
+          - generic [ref=e86]: /
+          - generic [ref=e87]: Configure
+      - generic [ref=e88]:
+        - button "Switch to dark mode" [ref=e89] [cursor=pointer]:
+          - img [ref=e90]
+        - button "New Scan" [ref=e92] [cursor=pointer]:
+          - img [ref=e93]
+          - generic [ref=e98]: New Scan
+    - main [ref=e99]:
+      - link "Back to Home" [ref=e100] [cursor=pointer]:
+        - /url: /
+        - img [ref=e101]
+        - text: Back to Home
+      - generic "Step 2 of 4" [ref=e104]:
+        - generic [ref=e106]:
+          - generic [ref=e107]: ✓
+          - generic [ref=e108]: Analyze
+        - generic [ref=e111]:
+          - generic [ref=e112]: "2"
+          - generic [ref=e113]: Configure
+        - generic [ref=e116]:
+          - generic [ref=e117]: "3"
+          - generic [ref=e118]: Scanning
+        - generic [ref=e121]:
+          - generic [ref=e122]: "4"
+          - generic [ref=e123]: Results
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - heading "Where does your app live?" [level=1] [ref=e129]
+            - paragraph [ref=e130]: Select your hosting platform — or choose “Auto-detect” and we'll figure it out.
+          - generic [ref=e131]:
+            - button "☁️ Amazon Web Services Most common" [active] [ref=e132] [cursor=pointer]:
+              - generic [ref=e133]: ☁️
+              - generic [ref=e134]: Amazon Web Services
+              - generic [ref=e135]: Most common
+              - img [ref=e137]
+            - button "🌐 Google Cloud" [ref=e139] [cursor=pointer]:
+              - generic [ref=e140]: 🌐
+              - generic [ref=e141]: Google Cloud
+            - button "🔷 Microsoft Azure" [ref=e142] [cursor=pointer]:
+              - generic [ref=e143]: 🔷
+              - generic [ref=e144]: Microsoft Azure
+            - button "▲ Vercel Greenest" [ref=e145] [cursor=pointer]:
+              - generic [ref=e146]: ▲
+              - generic [ref=e147]: Vercel
+              - generic [ref=e148]: Greenest
+            - button "🟢 Netlify" [ref=e149] [cursor=pointer]:
+              - generic [ref=e150]: 🟢
+              - generic [ref=e151]: Netlify
+            - button "🚂 Railway" [ref=e152] [cursor=pointer]:
+              - generic [ref=e153]: 🚂
+              - generic [ref=e154]: Railway
+            - button "🔴 Render" [ref=e155] [cursor=pointer]:
+              - generic [ref=e156]: 🔴
+              - generic [ref=e157]: Render
+            - button "✈️ Fly.io" [ref=e158] [cursor=pointer]:
+              - generic [ref=e159]: ✈️
+              - generic [ref=e160]: Fly.io
+            - button "🌊 DigitalOcean" [ref=e161] [cursor=pointer]:
+              - generic [ref=e162]: 🌊
+              - generic [ref=e163]: DigitalOcean
+            - button "🟣 Heroku" [ref=e164] [cursor=pointer]:
+              - generic [ref=e165]: 🟣
+              - generic [ref=e166]: Heroku
+            - button "🟠 Cloudflare" [ref=e167] [cursor=pointer]:
+              - generic [ref=e168]: 🟠
+              - generic [ref=e169]: Cloudflare
+            - button "🐙 GitHub Pages" [ref=e170] [cursor=pointer]:
+              - generic [ref=e171]: 🐙
+              - generic [ref=e172]: GitHub Pages
+            - button "🖥️ Self-hosted / VPS" [ref=e173] [cursor=pointer]:
+              - generic [ref=e174]: 🖥️
+              - generic [ref=e175]: Self-hosted / VPS
+            - button "🔍 Don't know / Auto We'll figure it out" [ref=e176] [cursor=pointer]:
+              - generic [ref=e177]: 🔍
+              - generic [ref=e178]: Don't know / Auto
+              - generic [ref=e179]: We'll figure it out
+        - generic [ref=e181]:
+          - heading "Amazon Web Services Settings" [level=2] [ref=e182]
+          - generic [ref=e184]:
+            - generic [ref=e185]: Service / Runtime
+            - button "Lambda (Serverless)" [ref=e186] [cursor=pointer]:
+              - generic [ref=e187]: Lambda (Serverless)
+              - img [ref=e188]
+          - generic [ref=e191]:
+            - generic [ref=e192]: Region
+            - button "US East — N. Virginia" [ref=e193] [cursor=pointer]:
+              - generic [ref=e194]: US East — N. Virginia
+              - img [ref=e195]
+          - generic [ref=e197]:
+            - generic [ref=e198]: Compute Model
+            - generic [ref=e199]:
+              - generic [ref=e200]: Always-on (VM / Container)
+              - switch [ref=e201] [cursor=pointer]
+              - generic [ref=e203]: Serverless (scale-to-zero)
+          - generic [ref=e204]:
+            - generic [ref=e205]: Instance / Machine Type (optional)
+            - textbox "Instance / Machine Type (optional)" [ref=e207]:
+              - /placeholder: e.g. t3.micro, e2-medium, Standard_B1s
+        - 'button "Next: Pipeline Details →" [ref=e208] [cursor=pointer]'

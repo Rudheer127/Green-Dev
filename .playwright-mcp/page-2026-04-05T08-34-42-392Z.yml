@@ -1,0 +1,122 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e625]:
+    - banner [ref=e626]:
+      - link "GreenDev Coach home" [ref=e627] [cursor=pointer]:
+        - /url: /
+        - img [ref=e628]:
+          - generic [ref=e631]: ">_"
+        - generic [ref=e632]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e634]:
+        - link "Home" [ref=e636] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e637]:
+          - generic [ref=e638]: /
+          - link "Results" [ref=e639] [cursor=pointer]:
+            - /url: /results
+        - generic [ref=e640]:
+          - generic [ref=e641]: /
+          - generic [ref=e642]: Action Plan
+      - generic [ref=e643]:
+        - button "Switch to dark mode" [ref=e644] [cursor=pointer]:
+          - img [ref=e645]
+        - button "New Scan" [ref=e647] [cursor=pointer]:
+          - img [ref=e648]
+          - generic [ref=e653]: New Scan
+    - main [ref=e654]:
+      - generic [ref=e655]:
+        - link "Back to Results" [ref=e656] [cursor=pointer]:
+          - /url: /results
+          - img [ref=e657]
+          - text: Back to Results
+        - button "Export Plan" [ref=e659] [cursor=pointer]:
+          - img [ref=e660]
+          - text: Export Plan
+      - generic [ref=e663]:
+        - heading "Action Plan" [level=1] [ref=e664]
+        - paragraph [ref=e665]: 4 recommendations for vercel/next.js — check items off as you complete them.
+      - generic [ref=e667]:
+        - paragraph [ref=e668]: ⚡ 3 Quick Wins Available
+        - paragraph [ref=e669]: "These are low-effort, high-impact fixes you can ship today: Add branch filters to CI triggers · Add path filters to skip docs-only changes · Convert images to WebP and enable lazy loading"
+      - generic [ref=e670]:
+        - generic [ref=e671]: "Sort by:"
+        - button "impact" [ref=e672] [cursor=pointer]
+        - button "effort" [ref=e673] [cursor=pointer]
+        - button "savings" [ref=e674] [cursor=pointer]
+      - generic [ref=e675]:
+        - generic [ref=e678]:
+          - generic [ref=e679]:
+            - button "Mark as done" [ref=e680] [cursor=pointer]:
+              - img [ref=e681]
+            - generic [ref=e684]:
+              - generic [ref=e686]: Add branch filters to CI triggers
+              - generic [ref=e687]:
+                - generic [ref=e688]: "Impact: HIGH"
+                - generic [ref=e689]: "Effort: LOW"
+                - generic [ref=e690]:
+                  - img [ref=e691]
+                  - text: < 1 hour
+          - paragraph [ref=e694]: Filter CI triggers to only run on main/develop branches or pull requests. This prevents wasting compute on experimental or feature branches.
+          - generic [ref=e695]:
+            - generic [ref=e696]:
+              - img [ref=e697]
+              - text: Saves 0.3kg/month CO₂/mo
+            - generic [ref=e700]: · saves $2.40/month/mo
+          - button "Show implementation guide" [ref=e702] [cursor=pointer]:
+            - img [ref=e703]
+            - text: Show implementation guide
+        - generic [ref=e707]:
+          - generic [ref=e708]:
+            - button "Mark as done" [ref=e709] [cursor=pointer]:
+              - img [ref=e710]
+            - generic [ref=e713]:
+              - generic [ref=e715]: Add path filters to skip docs-only changes
+              - generic [ref=e716]:
+                - generic [ref=e717]: "Impact: MEDIUM"
+                - generic [ref=e718]: "Effort: LOW"
+                - generic [ref=e719]:
+                  - img [ref=e720]
+                  - text: < 1 hour
+          - paragraph [ref=e723]: Path filters prevent CI from running when only markdown, docs, or config files change — saving minutes of compute per commit.
+          - button "Show implementation guide" [ref=e725] [cursor=pointer]:
+            - img [ref=e726]
+            - text: Show implementation guide
+        - generic [ref=e730]:
+          - generic [ref=e731]:
+            - button "Mark as done" [ref=e732] [cursor=pointer]:
+              - img [ref=e733]
+            - generic [ref=e736]:
+              - generic [ref=e738]: Convert images to WebP and enable lazy loading
+              - generic [ref=e739]:
+                - generic [ref=e740]: "Impact: MEDIUM"
+                - generic [ref=e741]: "Effort: LOW"
+                - generic [ref=e742]:
+                  - img [ref=e743]
+                  - text: < 1 hour
+          - paragraph [ref=e746]: WebP is 25–35% smaller than JPEG and 26% smaller than PNG. Combined with lazy loading, this reduces initial page weight and CDN transfer costs significantly.
+          - button "Show implementation guide" [ref=e748] [cursor=pointer]:
+            - img [ref=e749]
+            - text: Show implementation guide
+        - generic [ref=e753]:
+          - generic [ref=e754]:
+            - button "Mark as done" [ref=e755] [cursor=pointer]:
+              - img [ref=e756]
+            - generic [ref=e759]:
+              - generic [ref=e761]: Add code splitting and lazy loading for heavy routes
+              - generic [ref=e762]:
+                - generic [ref=e763]: "Impact: LOW"
+                - generic [ref=e764]: "Effort: LOW"
+                - generic [ref=e765]:
+                  - img [ref=e766]
+                  - text: < 1 hour
+          - paragraph [ref=e769]: Large JavaScript bundles increase time-to-interactive and waste bandwidth. Dynamic imports defer non-critical code until needed.
+          - button "Show implementation guide" [ref=e771] [cursor=pointer]:
+            - img [ref=e772]
+            - text: Show implementation guide
+      - generic [ref=e774]:
+        - button "← Back to Results" [ref=e775] [cursor=pointer]
+        - button "View AI Report →" [ref=e776] [cursor=pointer]

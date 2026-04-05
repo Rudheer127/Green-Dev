@@ -1,0 +1,55 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e259]:
+    - banner [ref=e260]:
+      - link "GreenDev Coach home" [ref=e261] [cursor=pointer]:
+        - /url: /
+        - img [ref=e262]:
+          - generic [ref=e265]: ">_"
+        - generic [ref=e266]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e268]:
+        - link "Home" [ref=e270] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e271]:
+          - generic [ref=e272]: /
+          - link "Configure" [ref=e273] [cursor=pointer]:
+            - /url: /analyze
+        - generic [ref=e274]:
+          - generic [ref=e275]: /
+          - generic [ref=e276]: Scanning
+      - button "Switch to dark mode" [ref=e278] [cursor=pointer]:
+        - img [ref=e279]
+    - main [ref=e281]:
+      - generic [ref=e282]:
+        - generic [ref=e284]:
+          - img [ref=e285]
+          - generic [ref=e289]: https://github.com/vercel/next.js
+        - generic [ref=e290]:
+          - generic [ref=e291]:
+            - img [ref=e292]
+            - generic [ref=e295]: Fetching repository structure
+          - generic [ref=e296]:
+            - img [ref=e297]
+            - generic [ref=e300]: Analyzing CI/CD pipelines
+          - generic [ref=e301]:
+            - img [ref=e302]
+            - generic [ref=e305]: Checking Docker & container config
+          - generic [ref=e306]:
+            - img [ref=e307]
+            - generic [ref=e309]: Evaluating region & compute choices
+          - generic [ref=e310]:
+            - img [ref=e311]
+            - generic [ref=e313]: Scoring sustainability factors
+          - generic [ref=e314]:
+            - img [ref=e315]
+            - generic [ref=e317]: Generating AI recommendations
+          - generic [ref=e318]:
+            - img [ref=e319]
+            - generic [ref=e321]: Building your report
+        - paragraph [ref=e322]: ~19s
+        - paragraph [ref=e323]: 🌿 us-west-2 (Oregon) runs on 95%+ renewable energy.
+        - button "Cancel scan" [ref=e324] [cursor=pointer]

@@ -1,0 +1,340 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - generic [ref=e15]:
+      - banner [ref=e16]:
+        - generic [ref=e17]:
+          - navigation [ref=e24]:
+            - link "Why Green Why Green" [ref=e25] [cursor=pointer]:
+              - /url: "#why-green"
+              - generic [ref=e26]:
+                - generic [ref=e27]: Why Green
+                - generic [ref=e28]: Why Green
+            - link "How it Works How it Works" [ref=e29] [cursor=pointer]:
+              - /url: "#how-it-works"
+              - generic [ref=e30]:
+                - generic [ref=e31]: How it Works
+                - generic [ref=e32]: How it Works
+            - link "About About" [ref=e33] [cursor=pointer]:
+              - /url: "#about"
+              - generic [ref=e34]:
+                - generic [ref=e35]: About
+                - generic [ref=e36]: About
+          - generic [ref=e37]:
+            - link "How it Works" [ref=e38] [cursor=pointer]:
+              - /url: "#how-it-works"
+            - link "Analyze Repo →" [ref=e40] [cursor=pointer]:
+              - /url: /start
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - heading "GreenDev Coach" [level=1] [ref=e46]
+          - paragraph [ref=e47]: Scan your repo. Cut your carbon.
+        - generic [ref=e48]:
+          - button "Continue with GreenDev" [ref=e49] [cursor=pointer]:
+            - img [ref=e50]
+            - generic [ref=e53]: Continue with GreenDev
+          - generic [ref=e56]: or
+          - generic [ref=e59]:
+            - textbox "info@gmail.com" [ref=e60]
+            - button "→ →" [ref=e61] [cursor=pointer]:
+              - generic [ref=e62]:
+                - generic [ref=e63]: →
+                - generic [ref=e64]: →
+        - paragraph [ref=e65]:
+          - text: By signing up, you agree to the
+          - link "MSA" [ref=e66] [cursor=pointer]:
+            - /url: "#"
+          - text: ","
+          - link "Product Terms" [ref=e67] [cursor=pointer]:
+            - /url: "#"
+          - text: ","
+          - link "Policies" [ref=e68] [cursor=pointer]:
+            - /url: "#"
+          - text: ","
+          - link "Privacy Notice" [ref=e69] [cursor=pointer]:
+            - /url: "#"
+          - text: ", and"
+          - link "Cookie Notice" [ref=e70] [cursor=pointer]:
+            - /url: "#"
+          - text: .
+    - generic [ref=e71]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - img [ref=e75]
+          - text: The Problem
+        - heading "Green code is good code." [level=2] [ref=e78]:
+          - text: Green code is
+          - text: good code.
+        - paragraph [ref=e79]: The cloud is physical infrastructure that consumes real electricity. Every architectural choice a developer makes — which compute service, which region, how often CI runs — has a direct energy cost. Most developers never see that number. We think they should.
+      - generic [ref=e80]:
+        - heading "The numbers that matter" [level=3] [ref=e81]
+        - generic [ref=e82]:
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - paragraph [ref=e85]: ~1%
+              - paragraph [ref=e86]: of global electricity
+            - paragraph [ref=e88]: Data centres consume roughly 1% of global electricity — a share that grows every year as cloud adoption accelerates. The software choices developers make today determine the hardware utilisation of tomorrow.
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - paragraph [ref=e91]: 40%
+              - paragraph [ref=e92]: CI energy wasted
+            - paragraph [ref=e94]: Studies show that 40% of CI compute time is spent re-downloading dependencies that haven't changed. A single actions/cache step eliminates that — for every project, on every run, forever.
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - paragraph [ref=e97]: 14×
+              - paragraph [ref=e98]: idle VM waste
+            - paragraph [ref=e100]: An always-on EC2 instance runs 720 hours per month. A student project is actually used roughly 50 of those hours. The other 670 hours burn electricity for nothing. Serverless scales to zero.
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - paragraph [ref=e103]: 95%
+              - paragraph [ref=e104]: renewable in us-west-2
+            - paragraph [ref=e106]: AWS Oregon (us-west-2) runs on more than 95% renewable energy. Moving a workload from ap-southeast-1 to us-west-2 can cut its effective carbon intensity by 40% with a single config change.
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - paragraph [ref=e109]: 50 MB
+              - paragraph [ref=e110]: vs 1.1 GB Docker image
+            - paragraph [ref=e112]: node:20-alpine is 50 MB. node:latest is 1.1 GB. Every CI pull, every container start moves that delta across the wire. Alpine is not a trade-off — it's strictly better.
+      - generic [ref=e113]:
+        - heading "Our Principles" [level=3] [ref=e114]
+        - generic [ref=e115]:
+          - generic [ref=e116]:
+            - heading "Visibility first" [level=4] [ref=e117]
+            - paragraph [ref=e118]: You cannot improve what you cannot measure. Most developers have no idea how many compute hours their project wastes per month, what that costs, or what it emits. GreenDev Coach makes that number concrete and personal.
+          - generic [ref=e119]:
+            - heading "Green is good engineering" [level=4] [ref=e120]
+            - paragraph [ref=e121]: Every green practice we recommend is also a performance or cost win. Alpine images build faster. Caching reduces pipeline time. Serverless eliminates idle spend. Sustainability and quality are the same thing.
+          - generic [ref=e122]:
+            - heading "Student devs are the leverage point" [level=4] [ref=e123]
+            - paragraph [ref=e124]: The habits a developer forms in university follow them to every startup, every enterprise, every cloud bill they'll ever write. Teaching green patterns early creates a compounding effect at industry scale.
+          - generic [ref=e125]:
+            - heading "Specific, not preachy" [level=4] [ref=e126]
+            - paragraph [ref=e127]: We don't show a generic "be sustainable" message. We show your repo, your CI triggers, your Docker base image, your region — and exactly what to change, with the YAML to paste directly into your workflow.
+    - generic [ref=e128]:
+      - generic [ref=e130]:
+        - generic [ref=e131]:
+          - img [ref=e132]
+          - text: The Solution
+        - heading "How It Works" [level=2] [ref=e134]
+        - paragraph [ref=e135]: From repo URL to actionable sustainability report in under 30 seconds. Here's exactly what happens under the hood.
+      - generic [ref=e136]:
+        - generic [ref=e138]:
+          - generic [ref=e141]: "01"
+          - generic [ref=e142]:
+            - generic [ref=e144]:
+              - img [ref=e146]
+              - heading "Paste your GitHub repo URL" [level=3] [ref=e150]
+            - paragraph [ref=e151]: Enter any public GitHub repository URL. GreenDev Coach uses the GitHub API to read your repo structure — no cloning, no credentials, no code execution.
+            - list [ref=e152]:
+              - listitem [ref=e153]:
+                - img [ref=e154]
+                - text: Fetches your full file tree in under a second
+              - listitem [ref=e157]:
+                - img [ref=e158]
+                - text: Reads .github/workflows/, Dockerfile, and package.json
+              - listitem [ref=e161]:
+                - img [ref=e162]
+                - text: Detects languages, topics, and dependency counts
+        - generic [ref=e165]:
+          - generic [ref=e168]: "02"
+          - generic [ref=e169]:
+            - generic [ref=e171]:
+              - img [ref=e173]
+              - heading "Configure your deployment" [level=3] [ref=e176]
+            - paragraph [ref=e177]: Tell us how your project is deployed. We use this to calculate real energy and cost baselines — an EC2 instance vs Lambda has a 14× difference in idle compute.
+            - list [ref=e178]:
+              - listitem [ref=e179]:
+                - img [ref=e180]
+                - text: "Cloud provider: AWS, GCP, Azure, or Auto-Detect"
+              - listitem [ref=e183]:
+                - img [ref=e184]
+                - text: "Compute type: VM, serverless, container, or static"
+              - listitem [ref=e187]:
+                - img [ref=e188]
+                - text: "Region: we know which regions run on renewable energy"
+              - listitem [ref=e191]:
+                - img [ref=e192]
+                - text: "CI/CD: frequency and tooling (GitHub Actions, CircleCI, etc.)"
+        - generic [ref=e195]:
+          - generic [ref=e198]: "03"
+          - generic [ref=e199]:
+            - generic [ref=e201]:
+              - img [ref=e203]
+              - heading "Five analysis engines run in parallel" [level=3] [ref=e208]
+            - paragraph [ref=e209]: GreenDev runs five specialised static analysis engines simultaneously. Each focuses on a different dimension of your project's environmental impact.
+            - list [ref=e210]:
+              - listitem [ref=e211]:
+                - img [ref=e212]
+                - text: CI/CD Engine — detects trigger patterns, caching, path filters
+              - listitem [ref=e215]:
+                - img [ref=e216]
+                - text: Docker Engine — checks base images, multi-stage builds
+              - listitem [ref=e219]:
+                - img [ref=e220]
+                - text: Compute Engine — evaluates always-on vs serverless, instance sizing
+              - listitem [ref=e223]:
+                - img [ref=e224]
+                - text: Assets Engine — measures dependency footprint and image optimisation
+              - listitem [ref=e227]:
+                - img [ref=e228]
+                - text: Region Engine — maps your region to carbon intensity data
+        - generic [ref=e231]:
+          - generic [ref=e234]: "04"
+          - generic [ref=e235]:
+            - generic [ref=e237]:
+              - img [ref=e239]
+              - heading "Sustainability score + 5 subscores" [level=3] [ref=e241]
+            - paragraph [ref=e242]: Your overall score (0–100) is calculated by deducting points for each detected issue. Five category subscores show exactly where to focus.
+            - list [ref=e243]:
+              - listitem [ref=e244]:
+                - img [ref=e245]
+                - text: "HIGH impact issues: −20 pts each"
+              - listitem [ref=e248]:
+                - img [ref=e249]
+                - text: "MEDIUM impact issues: −10 pts each"
+              - listitem [ref=e252]:
+                - img [ref=e253]
+                - text: "LOW impact issues: −5 pts each"
+              - listitem [ref=e256]:
+                - img [ref=e257]
+                - text: "Category grades: A, B, C, D, F per dimension"
+              - listitem [ref=e260]:
+                - img [ref=e261]
+                - text: "Before/after projection: CO₂ and cost savings"
+        - generic [ref=e264]:
+          - generic [ref=e267]: "05"
+          - generic [ref=e268]:
+            - generic [ref=e270]:
+              - img [ref=e272]
+              - heading "AI report in four formats" [level=3] [ref=e275]
+            - paragraph [ref=e276]: AWS Bedrock (Claude) generates four tailored versions of your report — each optimised for a different audience.
+            - list [ref=e277]:
+              - listitem [ref=e278]:
+                - img [ref=e279]
+                - text: Plain English — for anyone, no jargon
+              - listitem [ref=e282]:
+                - img [ref=e283]
+                - text: Technical — for engineers and DevOps, implementation detail
+              - listitem [ref=e286]:
+                - img [ref=e287]
+                - text: Sustainability — carbon metrics and environmental context
+              - listitem [ref=e290]:
+                - img [ref=e291]
+                - text: Pitch-Ready — executive summary for stakeholders
+      - generic [ref=e294]:
+        - generic [ref=e295]:
+          - heading "The Five Analysis Engines" [level=3] [ref=e296]
+          - generic [ref=e297]:
+            - generic [ref=e298]:
+              - generic [ref=e299]: CI/CD
+              - generic [ref=e300]: Branch filters, path filters, caching, workflow count
+            - generic [ref=e301]:
+              - generic [ref=e302]: Docker
+              - generic [ref=e303]: Base image weight, multi-stage builds, .dockerignore, root user
+            - generic [ref=e304]:
+              - generic [ref=e305]: Compute
+              - generic [ref=e306]: Always-on VMs, instance sizing, serverless alternatives
+            - generic [ref=e307]:
+              - generic [ref=e308]: Assets
+              - generic [ref=e309]: Dependency count, unoptimised images, bundle weight
+            - generic [ref=e310]:
+              - generic [ref=e311]: Region
+              - generic [ref=e312]: Carbon intensity tiers, renewable energy data, migration cost
+        - generic [ref=e313]:
+          - heading "Privacy & Security" [level=3] [ref=e314]
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - paragraph [ref=e317]: We DO access
+              - paragraph [ref=e318]:
+                - img [ref=e319]
+                - text: Public file tree
+              - paragraph [ref=e322]:
+                - img [ref=e323]
+                - text: GitHub Actions YAML
+              - paragraph [ref=e326]:
+                - img [ref=e327]
+                - text: Dockerfile
+              - paragraph [ref=e330]:
+                - img [ref=e331]
+                - text: package.json
+            - generic [ref=e334]:
+              - paragraph [ref=e335]: We NEVER access
+              - paragraph [ref=e336]:
+                - img [ref=e338]
+                - text: Source code execution
+              - paragraph [ref=e341]:
+                - img [ref=e343]
+                - text: Private repos
+              - paragraph [ref=e346]:
+                - img [ref=e348]
+                - text: Secrets or env vars
+              - paragraph [ref=e351]:
+                - img [ref=e353]
+                - text: Your AWS account
+    - generic [ref=e358]:
+      - generic [ref=e359]:
+        - img [ref=e360]
+        - text: Built for the AWS Sustainability Challenge
+      - heading "About GreenDev" [level=2] [ref=e363]
+      - generic [ref=e364]:
+        - paragraph [ref=e365]: We built GreenDev Coach to empower developers to write software that actively respects our planet. A sustainability analysis tool that scans public GitHub repositories and gives student developers an actionable roadmap to greener, cheaper cloud deployments.
+        - paragraph [ref=e366]: The best time to write green code was before you shipped. The second best time is now.
+      - generic [ref=e367]:
+        - generic [ref=e368]:
+          - heading "What We Built" [level=3] [ref=e369]
+          - generic [ref=e370]:
+            - generic [ref=e371]:
+              - generic [ref=e372]: "1"
+              - generic [ref=e373]:
+                - paragraph [ref=e374]: Sustainability Engine
+                - paragraph [ref=e375]: Static analysis across CI/CD, Docker, compute, assets
+            - generic [ref=e376]:
+              - generic [ref=e377]: "2"
+              - generic [ref=e378]:
+                - paragraph [ref=e379]: AI Report Generator
+                - paragraph [ref=e380]: AWS Bedrock Claude — plain English to pitch-ready reports
+            - generic [ref=e381]:
+              - generic [ref=e382]: "3"
+              - generic [ref=e383]:
+                - paragraph [ref=e384]: Score & Subscores
+                - paragraph [ref=e385]: Per-category grading across 5 dimensions
+            - generic [ref=e386]:
+              - generic [ref=e387]: "4"
+              - generic [ref=e388]:
+                - paragraph [ref=e389]: Framework Comparator
+                - paragraph [ref=e390]: Green score benchmarks for Next.js, Astro, Svelte, Remix & more
+        - generic [ref=e391]:
+          - heading "Tech Stack" [level=3] [ref=e392]
+          - generic [ref=e393]:
+            - generic [ref=e394]:
+              - generic [ref=e395]: Frontend
+              - generic [ref=e396]: Next.js 16 + TypeScript
+            - generic [ref=e397]:
+              - generic [ref=e398]: AI
+              - generic [ref=e399]: AWS Bedrock (Claude Sonnet)
+            - generic [ref=e400]:
+              - generic [ref=e401]: Database
+              - generic [ref=e402]: Supabase (scan history)
+            - generic [ref=e403]:
+              - generic [ref=e404]: Analysis
+              - generic [ref=e405]: GitHub API + 5 custom engines
+            - generic [ref=e406]:
+              - generic [ref=e407]: Hosting
+              - generic [ref=e408]: Vercel Edge Network
+      - link "Analyze Your Repository" [ref=e409] [cursor=pointer]:
+        - /url: /start
+        - text: Analyze Your Repository
+        - img [ref=e410]
+    - contentinfo [ref=e412]:
+      - generic [ref=e413]:
+        - generic [ref=e414]:
+          - img [ref=e415]
+          - generic [ref=e418]: GreenDev Coach
+        - generic [ref=e419]:
+          - link "Why Green" [ref=e420] [cursor=pointer]:
+            - /url: "#why-green"
+          - link "How it Works" [ref=e421] [cursor=pointer]:
+            - /url: "#how-it-works"
+          - link "About" [ref=e422] [cursor=pointer]:
+            - /url: "#about"
+        - paragraph [ref=e423]: © 2026 GreenDev Coach. Built for the AWS Sustainability Challenge.

@@ -1,0 +1,240 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]
+  - generic [ref=e325]:
+    - banner [ref=e326]:
+      - link "GreenDev Coach home" [ref=e327] [cursor=pointer]:
+        - /url: /
+        - img [ref=e328]:
+          - generic [ref=e331]: ">_"
+        - generic [ref=e332]: GreenDev Coach
+      - navigation "Breadcrumb" [ref=e334]:
+        - link "Home" [ref=e336] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e337]:
+          - generic [ref=e338]: /
+          - link "Configure" [ref=e339] [cursor=pointer]:
+            - /url: /analyze
+        - generic [ref=e340]:
+          - generic [ref=e341]: /
+          - generic [ref=e342]: Results
+      - generic [ref=e343]:
+        - button "Switch to dark mode" [ref=e344] [cursor=pointer]:
+          - img [ref=e345]
+        - button "New Scan" [ref=e347] [cursor=pointer]:
+          - img [ref=e348]
+          - generic [ref=e353]: New Scan
+    - main [ref=e354]:
+      - generic [ref=e355]:
+        - link "Back to Config" [ref=e356] [cursor=pointer]:
+          - /url: /analyze
+          - img [ref=e357]
+          - text: Back to Config
+        - button "← Start Over" [ref=e359] [cursor=pointer]
+      - generic [ref=e360]:
+        - generic [ref=e361]:
+          - generic [ref=e362]:
+            - img [ref=e363]
+            - generic [ref=e365]: Issues Found
+          - paragraph [ref=e366]: "5"
+          - paragraph [ref=e367]: 1 high · 3 med · 1 low
+        - generic [ref=e368]:
+          - generic [ref=e369]:
+            - img [ref=e370]
+            - generic [ref=e372]: CO₂ Saveable
+          - paragraph [ref=e373]: 0.2kg
+          - paragraph [ref=e374]: per month
+        - generic [ref=e375]:
+          - generic [ref=e376]:
+            - img [ref=e377]
+            - generic [ref=e379]: Cost Saveable
+          - paragraph [ref=e380]: $2.50
+          - paragraph [ref=e381]: per month
+        - generic [ref=e382]:
+          - generic [ref=e383]:
+            - img [ref=e384]
+            - generic [ref=e387]: Recommendations
+          - paragraph [ref=e388]: "4"
+          - paragraph [ref=e389]: actionable fixes
+      - generic [ref=e390]:
+        - generic [ref=e391]:
+          - generic [ref=e392]:
+            - heading "What We Found" [level=2] [ref=e393]
+            - button "HIGH CI pipeline runs on every push to all branches" [ref=e396] [cursor=pointer]:
+              - generic [ref=e397]: HIGH
+              - generic [ref=e398]: CI pipeline runs on every push to all branches
+              - img [ref=e399]
+            - button "MEDIUM No path filters — CI runs on documentation-only changes" [ref=e403] [cursor=pointer]:
+              - generic [ref=e404]: MEDIUM
+              - generic [ref=e405]: No path filters — CI runs on documentation-only changes
+              - img [ref=e406]
+            - button "LOW 5 separate workflow files detected" [ref=e410] [cursor=pointer]:
+              - generic [ref=e411]: LOW
+              - generic [ref=e412]: 5 separate workflow files detected
+              - img [ref=e413]
+            - button "MEDIUM 194 npm dependencies detected" [ref=e417] [cursor=pointer]:
+              - generic [ref=e418]: MEDIUM
+              - generic [ref=e419]: 194 npm dependencies detected
+              - img [ref=e420]
+            - button "MEDIUM 392 unoptimized image assets detected" [ref=e424] [cursor=pointer]:
+              - generic [ref=e425]: MEDIUM
+              - generic [ref=e426]: 392 unoptimized image assets detected
+              - img [ref=e427]
+          - generic [ref=e430]:
+            - generic [ref=e431]:
+              - img [ref=e432]
+              - heading "Energy Consumption Breakdown" [level=2] [ref=e434]
+            - generic [ref=e435]:
+              - generic [ref=e436]:
+                - paragraph [ref=e437]: 0.6kg
+                - paragraph [ref=e438]: estimated CO₂ per month
+              - img [ref=e439]
+              - generic [ref=e441]:
+                - paragraph [ref=e442]: 0.4kg
+                - paragraph [ref=e443]: after optimisations
+            - generic [ref=e444]:
+              - 'generic "CI/CD Pipeline: 0.21 kg" [ref=e445]'
+              - 'generic "Compute (servers): 0.24 kg" [ref=e446]'
+              - 'generic "Asset delivery (CDN): 0.09 kg" [ref=e447]'
+              - 'generic "Dependencies/builds: 0.06 kg" [ref=e448]'
+            - generic [ref=e449]:
+              - generic [ref=e450]:
+                - generic [ref=e452]: CI/CD Pipeline
+                - generic [ref=e453]: 0.21 kg
+              - generic [ref=e454]:
+                - generic [ref=e456]: Compute (servers)
+                - generic [ref=e457]: 0.24 kg
+              - generic [ref=e458]:
+                - generic [ref=e460]: Asset delivery (CDN)
+                - generic [ref=e461]: 0.09 kg
+              - generic [ref=e462]:
+                - generic [ref=e464]: Dependencies/builds
+                - generic [ref=e465]: 0.06 kg
+            - paragraph [ref=e466]:
+              - text: 💡 Implementing all recommendations would save
+              - strong [ref=e467]: 0.2 kg CO₂/month
+              - text: — equivalent to 1 km of driving.
+          - generic [ref=e469]:
+            - generic [ref=e470]:
+              - img [ref=e471]
+              - heading "Cost Breakdown" [level=2] [ref=e473]
+            - generic [ref=e474]:
+              - generic [ref=e475]:
+                - paragraph [ref=e476]: $8.20
+                - paragraph [ref=e477]: current monthly spend
+              - img [ref=e478]
+              - generic [ref=e480]:
+                - paragraph [ref=e481]: $5.70
+                - paragraph [ref=e482]: after optimisations
+            - generic [ref=e483]:
+              - generic [ref=e485]:
+                - generic [ref=e486]: Compute
+                - generic [ref=e487]: $4.51/mo
+              - generic [ref=e491]:
+                - generic [ref=e492]: CI/CD runs
+                - generic [ref=e493]: $2.05/mo
+              - generic [ref=e497]:
+                - generic [ref=e498]: Storage
+                - generic [ref=e499]: $0.98/mo
+              - generic [ref=e503]:
+                - generic [ref=e504]: Networking
+                - generic [ref=e505]: $0.66/mo
+            - paragraph [ref=e508]:
+              - text: "Potential monthly saving:"
+              - strong [ref=e509]: $2.50
+              - text: "· annualised:"
+              - strong [ref=e510]: $30
+          - generic [ref=e511]:
+            - heading "Before → After" [level=3] [ref=e512]
+            - generic [ref=e513]:
+              - generic [ref=e514]: Metric
+              - generic [ref=e515]: Current
+              - generic [ref=e516]: Optimised
+              - generic [ref=e517]:
+                - generic [ref=e518]: Monthly cost
+                - generic [ref=e519]: $8.20
+                - generic [ref=e520]: $5.70
+              - generic [ref=e521]:
+                - generic [ref=e522]: CO₂ / month
+                - generic [ref=e523]: 0.6kg
+                - generic [ref=e524]: 0.4kg
+              - generic [ref=e525]:
+                - generic [ref=e526]: Compute hrs
+                - generic [ref=e527]: "50"
+                - generic [ref=e528]: "50"
+              - generic [ref=e529]:
+                - generic [ref=e530]: CI runs
+                - generic [ref=e531]: "120"
+                - generic [ref=e532]: "30"
+          - generic [ref=e533]:
+            - button "View AI Report" [ref=e534] [cursor=pointer]: View AI Report
+            - button "Action Plan" [ref=e536] [cursor=pointer]
+            - button "What-If Simulator →" [ref=e537] [cursor=pointer]:
+              - img [ref=e538]
+              - text: What-If Simulator →
+        - generic [ref=e540]:
+          - generic [ref=e541]:
+            - generic [ref=e542]:
+              - meter [ref=e543]
+              - generic [ref=e546]:
+                - generic [ref=e547]: "45"
+                - generic [ref=e548]: /100
+            - generic [ref=e549]: Moderate Impact
+            - paragraph [ref=e550]: vercel/next.js · 5 factors analysed
+          - generic [ref=e551]:
+            - heading "Breakdown by Category" [level=2] [ref=e552]
+            - generic [ref=e553]:
+              - generic [ref=e554]:
+                - generic [ref=e555]:
+                  - generic [ref=e556]: CI/CD Efficiency
+                  - generic [ref=e557]:
+                    - generic [ref=e558]: 3 issues
+                    - generic [ref=e559]: C
+                - paragraph [ref=e562]: High-energy triggers detected — every push runs the full pipeline.
+              - generic [ref=e563]:
+                - generic [ref=e564]:
+                  - generic [ref=e565]: Compute Strategy
+                  - generic [ref=e567]: A
+                - paragraph [ref=e570]: Compute is well-sized and in a green region.
+              - generic [ref=e571]:
+                - generic [ref=e572]:
+                  - generic [ref=e573]: Stack Weight
+                  - generic [ref=e574]:
+                    - generic [ref=e575]: 1 issue
+                    - generic [ref=e576]: A
+                - paragraph [ref=e579]: Stack weight has minor improvements available.
+              - generic [ref=e580]:
+                - generic [ref=e581]:
+                  - generic [ref=e582]: Dependency Health
+                  - generic [ref=e583]:
+                    - generic [ref=e584]: 1 issue
+                    - generic [ref=e585]: A
+                - paragraph [ref=e588]: Large number of npm packages increases cold-start and build time.
+              - generic [ref=e589]:
+                - generic [ref=e590]:
+                  - generic [ref=e591]: Region Efficiency
+                  - generic [ref=e593]: A
+                - paragraph [ref=e596]: No region data — consider moving to a carbon-neutral region.
+          - generic [ref=e597]:
+            - heading "Top Fixes" [level=3] [ref=e598]
+            - generic [ref=e599]:
+              - generic [ref=e600]:
+                - img [ref=e601]
+                - paragraph [ref=e604]: Add branch filters to CI triggers
+              - generic [ref=e605]:
+                - generic [ref=e606]: LOW
+                - generic [ref=e607]: saves 0.3kg/month
+            - generic [ref=e608]:
+              - generic [ref=e609]:
+                - img [ref=e610]
+                - paragraph [ref=e613]: Add path filters to skip docs-only changes
+              - generic [ref=e615]: LOW
+            - generic [ref=e616]:
+              - generic [ref=e617]:
+                - img [ref=e618]
+                - paragraph [ref=e621]: Convert images to WebP and enable lazy loading
+              - generic [ref=e623]: LOW
+            - button "See all 4 recommendations →" [ref=e624] [cursor=pointer]

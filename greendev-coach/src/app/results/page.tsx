@@ -116,20 +116,59 @@ export default function ResultsPage() {
 
   const subscores = scanResult.subscores || [];
 
-  // Energy breakdown per category from subscores + issues
+  // ── Issue-driven energy breakdown ─────────────────────────────────────────
+  // Sum CO2 attributed to each issue category from actual detected issues
+  const issueCO2 = (cats: string[]) =>
+    scanResult.issues
+      .filter(i => cats.includes(i.category))
+      .reduce((s, i) => s + (i.estimatedMonthlyCO2 ? parseNum(i.estimatedMonthlyCO2) : 0), 0);
+
+  const issueCost = (cats: string[]) =>
+    scanResult.issues
+      .filter(i => cats.includes(i.category))
+      .reduce((s, i) => s + (i.estimatedMonthlyCost ? parseNum(i.estimatedMonthlyCost) : 0), 0);
+
+  const ciCO2Raw      = issueCO2(['ci-cd']);
+  const computeCO2Raw = issueCO2(['compute']);
+  const assetCO2Raw   = issueCO2(['assets']);
+  const depCO2Raw     = issueCO2(['storage', 'dependencies']);
+
+  const totalIssueCO2 = ciCO2Raw + computeCO2Raw + assetCO2Raw + depCO2Raw;
+  // Baseline = CO2 not attributed to any specific issue (infra overhead, networking etc.)
+  const baselineCO2   = Math.max(0, beforeCO2 - totalIssueCO2) / 4;
+
+  const adjCiCO2      = ciCO2Raw      + baselineCO2;
+  const adjComputeCO2 = computeCO2Raw + baselineCO2;
+  const adjAssetCO2   = assetCO2Raw   + baselineCO2;
+  const adjDepCO2     = depCO2Raw     + baselineCO2;
+  const adjCO2Total   = adjCiCO2 + adjComputeCO2 + adjAssetCO2 + adjDepCO2 || 1;
+
   const energyRows = [
-    { label: 'CI/CD Pipeline',     co2: (beforeCO2 * 0.35).toFixed(2), portion: 35, color: '#f97316' },
-    { label: 'Compute (servers)',   co2: (beforeCO2 * 0.40).toFixed(2), portion: 40, color: 'var(--color-high)' },
-    { label: 'Asset delivery (CDN)',co2: (beforeCO2 * 0.15).toFixed(2), portion: 15, color: 'var(--color-gold)' },
-    { label: 'Dependencies/builds', co2: (beforeCO2 * 0.10).toFixed(2), portion: 10, color: '#a3a3a3' },
+    { label: 'CI/CD Pipeline',      co2: adjCiCO2.toFixed(2),      portion: Math.round(adjCiCO2      / adjCO2Total * 100), color: '#f97316' },
+    { label: 'Compute (servers)',    co2: adjComputeCO2.toFixed(2),  portion: Math.round(adjComputeCO2 / adjCO2Total * 100), color: 'var(--color-high)' },
+    { label: 'Asset delivery (CDN)', co2: adjAssetCO2.toFixed(2),    portion: Math.round(adjAssetCO2   / adjCO2Total * 100), color: 'var(--color-gold)' },
+    { label: 'Dependencies/builds',  co2: adjDepCO2.toFixed(2),      portion: Math.round(adjDepCO2     / adjCO2Total * 100), color: '#a3a3a3' },
   ];
 
-  // Cost breakdown
+  // ── Issue-driven cost breakdown ────────────────────────────────────────────
+  const computeCostRaw = issueCost(['compute']);
+  const ciCostRaw      = issueCost(['ci-cd']);
+  const storageCostRaw = issueCost(['storage', 'dependencies']);
+
+  const totalIssueCost   = computeCostRaw + ciCostRaw + storageCostRaw;
+  const baselineCost     = Math.max(0, beforeCost - totalIssueCost) / 4;
+
+  const adjComputeCost   = computeCostRaw + baselineCost;
+  const adjCICost        = ciCostRaw      + baselineCost;
+  const adjStorageCost   = storageCostRaw + baselineCost;
+  const adjNetworkCost   = baselineCost; // networking has no specific issues
+  const adjCostTotal     = adjComputeCost + adjCICost + adjStorageCost + adjNetworkCost || 1;
+
   const costRows = [
-    { label: 'Compute',    cost: (beforeCost * 0.55).toFixed(2), portion: 55 },
-    { label: 'CI/CD runs', cost: (beforeCost * 0.25).toFixed(2), portion: 25 },
-    { label: 'Storage',    cost: (beforeCost * 0.12).toFixed(2), portion: 12 },
-    { label: 'Networking', cost: (beforeCost * 0.08).toFixed(2), portion:  8 },
+    { label: 'Compute',    cost: adjComputeCost.toFixed(2), portion: Math.round(adjComputeCost / adjCostTotal * 100) },
+    { label: 'CI/CD runs', cost: adjCICost.toFixed(2),      portion: Math.round(adjCICost      / adjCostTotal * 100) },
+    { label: 'Storage',    cost: adjStorageCost.toFixed(2), portion: Math.round(adjStorageCost / adjCostTotal * 100) },
+    { label: 'Networking', cost: adjNetworkCost.toFixed(2), portion: Math.round(adjNetworkCost / adjCostTotal * 100) },
   ];
 
   return (
@@ -357,8 +396,12 @@ export default function ResultsPage() {
                 {[
                   { label: 'Monthly cost',      before: scanResult.before.estimatedMonthlyCost, after: scanResult.after.estimatedMonthlyCost },
                   { label: 'CO₂ / month',       before: scanResult.before.estimatedMonthlyCO2,  after: scanResult.after.estimatedMonthlyCO2  },
+                  { label: 'Energy savings',    before: '$0.00', after: scanResult.after.energySavings },
+                  { label: 'Time saved/month',  before: '0 min', after: scanResult.after.timeSaved },
+                  { label: 'Bandwidth saved',   before: '0 MB', after: scanResult.after.bandwidthSaved },
                   { label: 'Compute hrs',        before: String(scanResult.before.monthlyComputeHours), after: String(scanResult.after.monthlyComputeHours) },
                   { label: 'CI runs',            before: String(scanResult.before.monthlyCIRuns),       after: String(scanResult.after.monthlyCIRuns)       },
+                  { label: 'Estimated requests', before: String(scanResult.before.monthlyRequests),     after: String(scanResult.after.monthlyRequests)     },
                 ].map((row) => (
                   <div key={row.label} className="contents">
                     <div className="text-left px-1 py-1.5 border-t" style={{ color: 'var(--color-text-muted)', borderColor: 'var(--color-divider)' }}>

@@ -11,6 +11,12 @@ Cover: what infrastructure patterns were detected, what the specific inefficienc
 Include specific service names (e.g., serverless functions, managed CDNs, etc.)
 Be direct and specific. No fluff.
 
+FORMATTING RULES (strictly follow):
+- Do NOT use any markdown formatting: no ##, ###, **, __, *, _, --, ---, or backticks
+- Do NOT use horizontal rules or dividers
+- Write in plain prose paragraphs only
+- Do NOT use bullet lists or numbered lists — write in flowing sentences instead
+
 CRITICAL INSTRUCTION: Analyze the user's infrastructure configuration against the repository's primary language and topics. If the configuration makes absolutely no sense for the repository's actual purpose (for instance, if the repo is a Machine Learning training repository, notebook, or simple CLI tool not meant for web hosting), explicitly call out this discrepancy at the beginning of your summary and gently inform the user that their inputs might be mismatched.
 
 Findings:

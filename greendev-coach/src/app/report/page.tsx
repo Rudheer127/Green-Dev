@@ -29,13 +29,23 @@ function stripMarkdown(text: string): string {
   cleaned = cleaned.replace(/_(.+?)_/g, '$1');
   // Remove markdown code: `text` → text
   cleaned = cleaned.replace(/`(.+?)`/g, '$1');
-  return cleaned;
+  // Remove inline heading markers: ### text → text
+  cleaned = cleaned.replace(/#{1,6}\s*/g, '');
+  // Remove horizontal rules
+  cleaned = cleaned.replace(/^---+\s*$/gm, '');
+  // Remove blockquote markers
+  cleaned = cleaned.replace(/^>\s*/gm, '');
+  return cleaned.trim();
 }
 
 function renderReport(text: string) {
   if (!text) return <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Report not available.</p>;
 
-  const paragraphs = text.split(/\n\n+/).filter(Boolean);
+  const paragraphs = text
+    .split(/\n\n+/)
+    .filter(Boolean)
+    .filter(p => !/^---+\s*$/.test(p.trim()))   // skip horizontal rules
+    .filter(p => p.trim().length > 0);            // skip blank paragraphs
 
   return (
     <div className="space-y-4">

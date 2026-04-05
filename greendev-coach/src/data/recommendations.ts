@@ -38,7 +38,7 @@ export const RECOMMENDATIONS_CATALOG: Recommendation[] = [
   },
   {
     id: 'ec2-to-lambda',
-    issueId: 'compute-always-on-ec2',
+    issueId: 'compute-always-on-vm',
     title: 'Migrate always-on EC2 to AWS Lambda',
     description:
       'Lambda charges only for actual invocations with millisecond billing. A student project with ~50 hours of active usage per month costs ~$0.20 vs $8.50+ for an always-on t3.micro.',
@@ -51,7 +51,7 @@ export const RECOMMENDATIONS_CATALOG: Recommendation[] = [
   },
   {
     id: 'ec2-to-static',
-    issueId: 'compute-always-on-ec2',
+    issueId: 'compute-always-on-vm',
     title: 'Move frontend to S3 + CloudFront',
     description:
       'If your frontend is a React/Next.js static export, serve it from S3 + CloudFront instead of EC2. This eliminates the compute layer entirely for static assets.',

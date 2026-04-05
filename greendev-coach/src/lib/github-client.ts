@@ -70,7 +70,7 @@ export async function fetchFileContent(
 export async function fetchRepoMeta(
   owner: string,
   repo: string
-): Promise<ApiResult<{ stars: number; language: string; size: number; topics: string[] }>> {
+): Promise<ApiResult<{ stars: number; language: string; size: number; topics: string[]; isPrivate: boolean }>> {
   try {
     const res = await fetch(`${GITHUB_API_BASE}/repos/${owner}/${repo}`, {
       headers: getHeaders(),
@@ -84,10 +84,43 @@ export async function fetchRepoMeta(
         language: json.language,
         size: json.size,
         topics: json.topics || [],
+        isPrivate: json.private === true,
       },
       error: null,
     };
   } catch {
     return { success: false, data: null, error: 'Failed to fetch repo metadata' };
+  }
+}
+
+/**
+ * Fetches the last 52 weeks of commit activity and returns the
+ * actual average monthly commit count (last 4 full weeks × 30/7).
+ * Falls back to 0 if GitHub hasn't yet computed the stats (202 response).
+ */
+export async function fetchCommitActivity(
+  owner: string,
+  repo: string
+): Promise<ApiResult<{ monthlyCommits: number; weeklyAvg: number }>> {
+  try {
+    const res = await fetch(
+      `${GITHUB_API_BASE}/repos/${owner}/${repo}/stats/commit_activity`,
+      { headers: getHeaders() }
+    );
+    // 202 = GitHub is computing stats, not ready yet
+    if (res.status === 202) return { success: true, data: { monthlyCommits: 0, weeklyAvg: 0 }, error: null };
+    if (!res.ok) return { success: false, data: null, error: 'Failed to fetch commit activity' };
+    const weeks: { total: number }[] = await res.json();
+    if (!Array.isArray(weeks) || weeks.length === 0) {
+      return { success: true, data: { monthlyCommits: 0, weeklyAvg: 0 }, error: null };
+    }
+    // Use last 12 weeks for a more stable average (avoids outlier sprints)
+    const recent = weeks.slice(-12);
+    const totalCommits = recent.reduce((s, w) => s + (w.total || 0), 0);
+    const weeklyAvg = totalCommits / recent.length;
+    const monthlyCommits = Math.round(weeklyAvg * 4.33); // 4.33 weeks per month
+    return { success: true, data: { monthlyCommits, weeklyAvg }, error: null };
+  } catch {
+    return { success: false, data: null, error: 'Failed to fetch commit activity' };
   }
 }

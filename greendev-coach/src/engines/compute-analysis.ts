@@ -5,11 +5,19 @@ const TIER1_REGIONS = new Set(['us-west-2', 'eu-west-1', 'eu-north-1', 'ca-centr
 const TIER2_REGIONS = new Set(['us-east-1', 'us-east-2', 'ap-southeast-2']);
 const TIER3_REGIONS = new Set(['ap-southeast-1', 'ap-northeast-1', 'ap-northeast-2', 'sa-east-1', 'eu-central-1']);
 
-export function analyzeRegion(region: string): Issue[] {
+export function analyzeRegion(region: string, cloudProvider?: string): Issue[] {
   const issues: Issue[] = [];
 
   if (region === 'Auto-Detect' || region === 'Auto-Detect / Unknown') return issues;
 
+  // ── Vercel regions are globally efficient — no warnings ──
+  if (cloudProvider === 'Vercel' || !cloudProvider) {
+    // Vercel uses edge locations worldwide with efficient GCP infrastructure
+    // global-edge is fine, regional edges are optimized
+    return issues;
+  }
+
+  // ── AWS-specific region analysis ──
   if (TIER3_REGIONS.has(region)) {
     issues.push({
       id: 'region-high-carbon',
@@ -36,7 +44,13 @@ const OVERSIZED_INSTANCE_PREFIXES = ['m5', 'm6', 'm7', 'c5', 'c6', 'c7', 'r5', '
 
 export function analyzeCompute(config: DeploymentConfig): Issue[] {
   const issues: Issue[] = [];
-  const { cloudService, isServerless, instanceType } = config;
+  const { cloudService, cloudProvider, isServerless, instanceType } = config;
+
+  // ── Vercel: no compute issues (already serverless with per-request pricing) ──
+  if (cloudProvider === 'Vercel' || cloudService?.includes('Vercel')) {
+    // Vercel is inherently serverless and efficient — no compute warnings
+    return issues;
+  }
 
   // Always-on VM (EC2 or Compute Engine)
   if ((cloudService === 'EC2' || cloudService === 'Compute Engine') && !isServerless) {
