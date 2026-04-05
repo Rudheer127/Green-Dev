@@ -1,5 +1,0 @@
-{
-  "buildCommand": "cd greendev-coach && npm run build",
-  "outputDirectory": "greendev-coach/.next",
-  "rootDirectory": "greendev-coach"
-}
