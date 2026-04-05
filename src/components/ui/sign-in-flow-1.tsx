@@ -3,6 +3,7 @@
 import React, { useState,useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -372,6 +373,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
 };
 
 function MiniNavbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -379,6 +381,16 @@ function MiniNavbar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname !== '/') return;
+    e.preventDefault();
+    setIsOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.location.hash) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
+  }
 
   useEffect(() => {
     if (shapeTimeoutRef.current) {
@@ -403,8 +415,9 @@ function MiniNavbar() {
   const logoElement = (
     <Link
       href="/"
+      onClick={handleLogoClick}
       className="relative flex items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      aria-label="GreenDev Coach home"
+      aria-label="Back to top — GreenDev Coach home"
     >
       <span className="relative w-5 h-5 flex items-center justify-center">
         <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80" />
