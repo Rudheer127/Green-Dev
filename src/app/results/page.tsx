@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAppState, useAppDispatch } from '@/lib/store';
-import { Subscore } from '@/types';
+import { Subscore, AnalysisResult, PlanResult } from '@/types';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -72,15 +72,16 @@ function ScoreBar({ subscore, delay }: { subscore: Subscore; delay: number }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ResultsPage() {
-  const { scanResult } = useAppState();
+  const { scanResult, planResult } = useAppState();
+  const displayResult = scanResult || planResult;
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [expandedIssue, setExpandedIssue] = useState<string | null>(null);
   const [animatedScore, setAnimatedScore] = useState(0);
 
   useEffect(() => {
-    if (!scanResult) { router.replace('/'); return; }
-    const target = scanResult.sustainabilityScore;
+    if (!displayResult) { router.replace('/'); return; }
+    const target = displayResult.sustainabilityScore;
     let current = 0;
     const step = Math.ceil(target / 40);
     const interval = setInterval(() => {
@@ -89,11 +90,11 @@ export default function ResultsPage() {
       if (current >= target) clearInterval(interval);
     }, 20);
     return () => clearInterval(interval);
-  }, [scanResult, router]);
+  }, [displayResult, router]);
 
-  if (!scanResult) return null;
+  if (!displayResult) return null;
 
-  const score = scanResult.sustainabilityScore;
+  const score = displayResult.sustainabilityScore;
   const scoreColor =
     score >= 75 ? 'var(--color-success)' :
     score >= 45 ? 'var(--color-gold)' :
@@ -102,29 +103,29 @@ export default function ResultsPage() {
   const circumference = 2 * Math.PI * 52;
   const strokeDashoffset = circumference - (animatedScore / 100) * circumference;
 
-  const highIssues = scanResult.issues.filter(i => i.impact === 'HIGH').length;
-  const medIssues  = scanResult.issues.filter(i => i.impact === 'MEDIUM').length;
-  const lowIssues  = scanResult.issues.filter(i => i.impact === 'LOW').length;
+  const highIssues = displayResult.issues.filter(i => i.impact === 'HIGH').length;
+  const medIssues  = displayResult.issues.filter(i => i.impact === 'MEDIUM').length;
+  const lowIssues  = displayResult.issues.filter(i => i.impact === 'LOW').length;
 
-  const beforeCO2  = parseNum(scanResult.before.estimatedMonthlyCO2);
-  const afterCO2   = parseNum(scanResult.after.estimatedMonthlyCO2);
+  const beforeCO2  = parseNum(displayResult.before.estimatedMonthlyCO2);
+  const afterCO2   = parseNum(displayResult.after.estimatedMonthlyCO2);
   const co2Savings = (beforeCO2 - afterCO2).toFixed(1);
 
-  const beforeCost  = parseNum(scanResult.before.estimatedMonthlyCost);
-  const afterCost   = parseNum(scanResult.after.estimatedMonthlyCost);
+  const beforeCost  = parseNum(displayResult.before.estimatedMonthlyCost);
+  const afterCost   = parseNum(displayResult.after.estimatedMonthlyCost);
   const costSavings = (beforeCost - afterCost).toFixed(2);
 
-  const subscores = scanResult.subscores || [];
+  const subscores = displayResult.subscores || [];
 
   // ── Issue-driven energy breakdown ─────────────────────────────────────────
   // Sum CO2 attributed to each issue category from actual detected issues
   const issueCO2 = (cats: string[]) =>
-    scanResult.issues
+    displayResult.issues
       .filter(i => cats.includes(i.category))
       .reduce((s, i) => s + (i.estimatedMonthlyCO2 ? parseNum(i.estimatedMonthlyCO2) : 0), 0);
 
   const issueCost = (cats: string[]) =>
-    scanResult.issues
+    displayResult.issues
       .filter(i => cats.includes(i.category))
       .reduce((s, i) => s + (i.estimatedMonthlyCost ? parseNum(i.estimatedMonthlyCost) : 0), 0);
 
@@ -176,15 +177,15 @@ export default function ResultsPage() {
       <Header
         breadcrumbItems={[
           { label: 'Home', href: '/' },
-          { label: 'Configure', href: '/analyze' },
-          { label: 'Results', href: '/results' },
+          { label: planResult ? 'Idea' : 'Configure', href: planResult ? '/idea' : '/analyze' },
+          { label: planResult ? 'Blueprint' : 'Results', href: '/results' },
         ]}
       />
 
       <main id="main-content" className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 space-y-6">
         {/* Top bar */}
         <div className="flex items-center justify-between">
-          <BackButton href="/analyze" label="Back to Config" />
+          <BackButton href={planResult ? "/idea/setup" : "/analyze"} label={planResult ? "Back to Idea" : "Back to Config"} />
           <button
             onClick={() => { dispatch({ type: 'RESET_ALL' }); router.push('/'); }}
             className="text-xs underline"
@@ -202,10 +203,10 @@ export default function ResultsPage() {
           transition={{ duration: 0.4 }}
         >
           {[
-            { icon: <BarChart3 className="w-4 h-4" />, label: 'Issues Found',    value: scanResult.issues.length, sub: `${highIssues} high · ${medIssues} med · ${lowIssues} low`, color: 'var(--color-high)' },
+            { icon: <BarChart3 className="w-4 h-4" />, label: 'Issues Found',    value: displayResult.issues.length, sub: `${highIssues} high · ${medIssues} med · ${lowIssues} low`, color: 'var(--color-high)' },
             { icon: <Flame      className="w-4 h-4" />, label: 'CO₂ Saveable',   value: `${co2Savings}kg`,        sub: 'per month',          color: 'var(--color-success)' },
             { icon: <DollarSign className="w-4 h-4" />, label: 'Cost Saveable',  value: `$${costSavings}`,        sub: 'per month',          color: 'var(--color-gold)' },
-            { icon: <Leaf       className="w-4 h-4" />, label: 'Recommendations',value: scanResult.recommendations.length, sub: 'actionable fixes', color: 'var(--color-primary)' },
+            { icon: <Leaf       className="w-4 h-4" />, label: 'Recommendations',value: displayResult.recommendations.length, sub: 'actionable fixes', color: 'var(--color-primary)' },
           ].map((stat) => (
             <Card key={stat.label} className="p-4 flex flex-col gap-1">
               <div className="flex items-center gap-1.5" style={{ color: stat.color }}>
@@ -235,7 +236,7 @@ export default function ResultsPage() {
               <h2 className="text-lg font-bold" style={{ fontFamily: 'var(--font-display)' }}>
                 What We Found
               </h2>
-              {scanResult.issues.slice(0, 6).map((issue, idx) => (
+              {displayResult.issues.slice(0, 6).map((issue, idx) => (
                 <motion.div
                   key={issue.id}
                   initial={{ opacity: 0, x: -16 }}
@@ -289,14 +290,14 @@ export default function ResultsPage() {
                 <div className="flex items-center gap-3">
                   <div>
                     <p className="text-3xl font-extrabold tabular-nums" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-high)' }}>
-                      {scanResult.before.estimatedMonthlyCO2}
+                      {displayResult.before.estimatedMonthlyCO2}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--color-text-faint)' }}>estimated CO₂ per month</p>
                   </div>
                   <ArrowRight className="w-4 h-4 shrink-0" style={{ color: 'var(--color-text-faint)' }} />
                   <div>
                     <p className="text-3xl font-extrabold tabular-nums" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-success)' }}>
-                      {scanResult.after.estimatedMonthlyCO2}
+                      {displayResult.after.estimatedMonthlyCO2}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--color-text-faint)' }}>after optimisations</p>
                   </div>
@@ -346,14 +347,14 @@ export default function ResultsPage() {
                 <div className="flex items-center gap-3">
                   <div>
                     <p className="text-3xl font-extrabold tabular-nums" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text)' }}>
-                      {scanResult.before.estimatedMonthlyCost}
+                      {displayResult.before.estimatedMonthlyCost}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--color-text-faint)' }}>current monthly spend</p>
                   </div>
                   <ArrowRight className="w-4 h-4 shrink-0" style={{ color: 'var(--color-text-faint)' }} />
                   <div>
                     <p className="text-3xl font-extrabold tabular-nums" style={{ fontFamily: 'var(--font-display)', color: 'var(--color-success)' }}>
-                      {scanResult.after.estimatedMonthlyCost}
+                      {displayResult.after.estimatedMonthlyCost}
                     </p>
                     <p className="text-xs" style={{ color: 'var(--color-text-faint)' }}>after optimisations</p>
                   </div>
@@ -394,14 +395,14 @@ export default function ResultsPage() {
                 <div className="font-medium" style={{ color: 'var(--color-high)' }}>Current</div>
                 <div className="font-medium" style={{ color: 'var(--color-success)' }}>Optimised</div>
                 {[
-                  { label: 'Monthly cost',      before: scanResult.before.estimatedMonthlyCost, after: scanResult.after.estimatedMonthlyCost },
-                  { label: 'CO₂ / month',       before: scanResult.before.estimatedMonthlyCO2,  after: scanResult.after.estimatedMonthlyCO2  },
-                  { label: 'Energy savings',    before: '$0.00', after: scanResult.after.energySavings },
-                  { label: 'Time saved/month',  before: '0 min', after: scanResult.after.timeSaved },
-                  { label: 'Bandwidth saved',   before: '0 MB', after: scanResult.after.bandwidthSaved },
-                  { label: 'Compute hrs',        before: String(scanResult.before.monthlyComputeHours), after: String(scanResult.after.monthlyComputeHours) },
-                  { label: 'CI runs',            before: String(scanResult.before.monthlyCIRuns),       after: String(scanResult.after.monthlyCIRuns)       },
-                  { label: 'Estimated requests', before: String(scanResult.before.monthlyRequests),     after: String(scanResult.after.monthlyRequests)     },
+                  { label: 'Monthly cost',      before: displayResult.before.estimatedMonthlyCost, after: displayResult.after.estimatedMonthlyCost },
+                  { label: 'CO₂ / month',       before: displayResult.before.estimatedMonthlyCO2,  after: displayResult.after.estimatedMonthlyCO2  },
+                  { label: 'Energy savings',    before: '$0.00', after: displayResult.after.energySavings },
+                  { label: 'Time saved/month',  before: '0 min', after: displayResult.after.timeSaved },
+                  { label: 'Bandwidth saved',   before: '0 MB', after: displayResult.after.bandwidthSaved },
+                  { label: 'Compute hrs',        before: String(displayResult.before.monthlyComputeHours), after: String(displayResult.after.monthlyComputeHours) },
+                  { label: 'CI runs',            before: String(displayResult.before.monthlyCIRuns),       after: String(displayResult.after.monthlyCIRuns)       },
+                  { label: 'Estimated requests', before: String(displayResult.before.monthlyRequests),     after: String(displayResult.after.monthlyRequests)     },
                 ].map((row) => (
                   <div key={row.label} className="contents">
                     <div className="text-left px-1 py-1.5 border-t" style={{ color: 'var(--color-text-muted)', borderColor: 'var(--color-divider)' }}>
@@ -460,17 +461,22 @@ export default function ResultsPage() {
               </div>
 
               <Badge variant="impact" level={score >= 75 ? 'LOW' : score >= 45 ? 'MEDIUM' : 'HIGH'}>
-                {scanResult.scoreLabel}
+                {displayResult.scoreLabel}
               </Badge>
 
-              {scanResult.detectedStack.isMock && (
+              {scanResult?.detectedStack.isMock && (
                 <Badge variant="neutral" className="bg-amber-100 text-amber-800 border-amber-200">
                   Demo Mode
                 </Badge>
               )}
+              {planResult && (
+                <Badge variant="neutral" className="bg-blue-100 text-blue-800 border-blue-200">
+                  Blueprint Mode
+                </Badge>
+              )}
 
               <p className="text-xs text-center" style={{ color: 'var(--color-text-muted)' }}>
-                {scanResult.repoName} · {scanResult.issues.length} factors analysed
+                {scanResult ? scanResult.repoName : 'Project Idea Blueprint'} · {displayResult.issues.length} factors analysed
               </p>
             </Card>
 
@@ -530,7 +536,7 @@ export default function ResultsPage() {
               <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>
                 Top Fixes
               </h3>
-              {scanResult.recommendations.length === 0 ? (
+              {displayResult.recommendations.length === 0 ? (
                 <div className="py-4 text-center space-y-2">
                   <p className="text-sm font-medium" style={{ color: 'var(--color-success)' }}>✓ No issues found!</p>
                   <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
@@ -539,7 +545,7 @@ export default function ResultsPage() {
                 </div>
               ) : (
                 <>
-                  {scanResult.recommendations.slice(0, 3).map((rec) => (
+                  {displayResult.recommendations.slice(0, 3).map((rec) => (
                     <div key={rec.id} className="space-y-1">
                       <div className="flex items-start gap-2">
                         <TrendingDown className="w-3.5 h-3.5 shrink-0 mt-0.5" style={{ color: 'var(--color-success)' }} />
@@ -560,7 +566,7 @@ export default function ResultsPage() {
                     </div>
                   ))}
                   <Button size="sm" variant="ghost" className="w-full text-xs" onClick={() => router.push('/recommendations')}>
-                    See all {scanResult.recommendations.length} recommendations →
+                    See all {displayResult.recommendations.length} recommendations →
                   </Button>
                 </>
               )}

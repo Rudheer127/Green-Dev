@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useAppState } from '@/lib/store';
-import { Recommendation } from '@/types';
+import { Recommendation, AnalysisResult, PlanResult } from '@/types';
 
 const EFFORT_ORDER = { LOW: 0, MEDIUM: 1, HIGH: 2 };
 const IMPACT_ORDER = { HIGH: 0, MEDIUM: 1, LOW: 2 };
@@ -124,17 +124,18 @@ function RecommendationCard({ rec, index, cloudProvider }: { rec: Recommendation
 }
 
 export default function RecommendationsPage() {
-  const { scanResult } = useAppState();
+  const { scanResult, planResult } = useAppState();
+  const displayResult = scanResult || planResult;
   const router = useRouter();
   const [sort, setSort] = useState<SortMode>('impact');
 
   useEffect(() => {
-    if (!scanResult) router.replace('/');
-  }, [scanResult, router]);
+    if (!displayResult) router.replace('/');
+  }, [displayResult, router]);
 
-  if (!scanResult) return null;
+  if (!displayResult) return null;
 
-  const recs = [...scanResult.recommendations];
+  const recs = [...displayResult.recommendations];
 
   if (sort === 'impact') {
     recs.sort((a, b) => IMPACT_ORDER[a.impact] - IMPACT_ORDER[b.impact]);
@@ -149,10 +150,10 @@ export default function RecommendationsPage() {
     });
   }
 
-  const cloudProvider =
-    scanResult.detectedStack?.cloudProvider &&
-    scanResult.detectedStack.cloudProvider !== 'Auto-Detect / Unknown'
-      ? scanResult.detectedStack.cloudProvider
+  const cloudProvider = scanResult && scanResult.detectedStack?.cloudProvider && scanResult.detectedStack.cloudProvider !== 'Auto-Detect / Unknown'
+    ? scanResult.detectedStack.cloudProvider
+    : planResult && planResult.suggestedStack?.cloudProvider
+      ? planResult.suggestedStack.cloudProvider
       : 'Cloud';
 
   // Quick wins: LOW effort, HIGH or MEDIUM impact
@@ -162,12 +163,13 @@ export default function RecommendationsPage() {
     const lines = recs.map((r, i) =>
       `${i + 1}. ${r.title} [Impact: ${r.impact}, Effort: ${r.effort}]\n   ${r.description}${r.implementationGuide ? '\n\n   Guide:\n   ' + r.implementationGuide : ''}`
     ).join('\n\n');
-    const content = `GreenDev Coach — Action Plan\nRepository: ${scanResult!.repoName}\nScore: ${scanResult!.sustainabilityScore}/100\n\n${lines}`;
+    const targetName = scanResult ? scanResult.repoName : 'Idea Blueprint';
+    const content = `GreenDev Coach — Action Plan\nTarget: ${targetName}\nScore: ${displayResult!.sustainabilityScore}/100\n\n${lines}`;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `greendev-action-plan-${scanResult!.repoName.replace('/', '-')}.txt`;
+    a.download = `greendev-action-plan-${targetName.replace(/\//g, '-')}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -199,8 +201,8 @@ export default function RecommendationsPage() {
           </h1>
           <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
             {recs.length === 0
-              ? `No issues found in ${scanResult.repoName} — great job keeping it green!`
-              : `${recs.length} recommendation${recs.length > 1 ? 's' : ''} for ${scanResult.repoName} — check items off as you complete them.`
+              ? `No issues found in ${scanResult ? scanResult.repoName : 'your plan'} — great job keeping it green!`
+              : `${recs.length} recommendation${recs.length > 1 ? 's' : ''} for ${scanResult ? scanResult.repoName : 'your blueprint'} — check items off as you complete them.`
             }
           </p>
         </motion.div>

@@ -90,23 +90,24 @@ function renderReport(text: string) {
 }
 
 export default function ReportPage() {
-  const { scanResult } = useAppState();
+  const { scanResult, planResult } = useAppState();
+  const displayResult = scanResult || planResult;
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState('plain');
 
   useEffect(() => {
-    if (!scanResult) router.replace('/');
-  }, [scanResult, router]);
+    if (!displayResult) router.replace('/');
+  }, [displayResult, router]);
 
-  if (!scanResult) return null;
+  if (!displayResult) return null;
 
   const reportMap: Record<string, string> = {
-    plain: scanResult.report?.plainEnglish || '',
-    technical: scanResult.report?.technical || '',
-    sustainability: scanResult.report?.sustainability || '',
-    pitch: scanResult.report?.pitch || '',
+    plain: displayResult.report?.plainEnglish || '',
+    technical: displayResult.report?.technical || '',
+    sustainability: displayResult.report?.sustainability || '',
+    pitch: displayResult.report?.pitch || '',
   };
 
   const activeConfig = TAB_CONFIG.find(t => t.id === activeTab) || TAB_CONFIG[0];
@@ -124,12 +125,12 @@ export default function ReportPage() {
   }
 
   async function handleShare() {
-    if (!scanResult) return;
+    if (!displayResult) return;
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: `GreenDev Coach Report — ${scanResult.repoName}`,
-          text: `Sustainability score: ${scanResult.sustainabilityScore}/100`,
+          title: `GreenDev Coach Report — ${scanResult ? scanResult.repoName : 'Project Idea'}`,
+          text: `Sustainability score: ${displayResult.sustainabilityScore}/100`,
           url: window.location.href,
         });
       } catch { /* user dismissed */ }
@@ -139,8 +140,8 @@ export default function ReportPage() {
   }
 
   const scoreColor =
-    scanResult.sustainabilityScore >= 75 ? 'var(--color-success)' :
-    scanResult.sustainabilityScore >= 45 ? 'var(--color-gold)' :
+    displayResult.sustainabilityScore >= 75 ? 'var(--color-success)' :
+    displayResult.sustainabilityScore >= 45 ? 'var(--color-gold)' :
     'var(--color-high)';
 
   return (
@@ -148,8 +149,8 @@ export default function ReportPage() {
       <Header
         breadcrumbItems={[
           { label: 'Home', href: '/' },
-          { label: 'Configure', href: '/analyze' },
-          { label: 'Results', href: '/results' },
+          { label: planResult ? 'Idea' : 'Configure', href: planResult ? '/idea' : '/analyze' },
+          { label: planResult ? 'Blueprint' : 'Results', href: '/results' },
           { label: 'Report', href: '/report' },
         ]}
       />
@@ -174,9 +175,14 @@ export default function ReportPage() {
           >
             AI Sustainability Report
           </motion.h1>
-          {scanResult.detectedStack.isMock && (
+          {scanResult?.detectedStack.isMock && (
             <Badge variant="neutral" className="bg-amber-100 text-amber-800 border-amber-200 uppercase tracking-wide">
               Demo Mode
+            </Badge>
+          )}
+          {planResult && (
+            <Badge variant="neutral" className="bg-blue-100 text-blue-800 border-blue-200 uppercase tracking-wide">
+              Blueprint Mode
             </Badge>
           )}
         </div>
@@ -260,41 +266,41 @@ export default function ReportPage() {
               <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Scan Summary</h3>
               <div className="flex items-center gap-3">
                 <span className="text-4xl font-extrabold" style={{ fontFamily: 'var(--font-display)', color: scoreColor }}>
-                  {scanResult.sustainabilityScore}
+                  {displayResult.sustainabilityScore}
                 </span>
                 <div>
                   <p className="text-xs font-medium" style={{ color: 'var(--color-text)' }}>/100</p>
-                  <Badge variant="impact" level={scanResult.sustainabilityScore >= 75 ? 'LOW' : scanResult.sustainabilityScore >= 45 ? 'MEDIUM' : 'HIGH'}>
-                    {scanResult.scoreLabel}
+                  <Badge variant="impact" level={displayResult.sustainabilityScore >= 75 ? 'LOW' : displayResult.sustainabilityScore >= 45 ? 'MEDIUM' : 'HIGH'}>
+                    {displayResult.scoreLabel}
                   </Badge>
                 </div>
               </div>
               <div className="space-y-1.5 text-xs" style={{ color: 'var(--color-text-muted)' }}>
                 <div className="flex justify-between">
-                  <span>Repository</span>
-                  <span className="font-mono truncate max-w-[120px]" style={{ color: 'var(--color-text)' }}>{scanResult.repoName}</span>
+                  <span>{scanResult ? 'Repository' : 'Project'}</span>
+                  <span className="font-mono truncate max-w-[120px]" style={{ color: 'var(--color-text)' }}>{scanResult ? scanResult.repoName : 'Idea Blueprint'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Issues found</span>
-                  <span style={{ color: 'var(--color-text)' }}>{scanResult.issues.length}</span>
+                  <span style={{ color: 'var(--color-text)' }}>{displayResult.issues.length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Recommendations</span>
-                  <span style={{ color: 'var(--color-text)' }}>{scanResult.recommendations.length}</span>
+                  <span style={{ color: 'var(--color-text)' }}>{displayResult.recommendations.length}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Scanned at</span>
-                  <span style={{ color: 'var(--color-text)' }}>{new Date(scanResult.scannedAt).toLocaleTimeString()}</span>
+                  <span style={{ color: 'var(--color-text)' }}>{new Date(displayResult.scannedAt).toLocaleTimeString()}</span>
                 </div>
               </div>
             </Card>
 
             {/* Subscores mini */}
-            {scanResult.subscores && scanResult.subscores.length > 0 && (
+            {displayResult.subscores && displayResult.subscores.length > 0 && (
               <Card className="p-4 space-y-3">
                 <h3 className="text-sm font-bold" style={{ fontFamily: 'var(--font-display)' }}>Category Grades</h3>
                 <div className="space-y-2">
-                  {scanResult.subscores.map(sub => (
+                  {displayResult.subscores.map(sub => (
                     <div key={sub.id} className="flex items-center justify-between">
                       <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{sub.label}</span>
                       <span
@@ -321,13 +327,13 @@ export default function ReportPage() {
                 <div className="flex justify-between">
                   <span>CO₂/month</span>
                   <span style={{ color: 'var(--color-success)' }}>
-                    {scanResult.before.estimatedMonthlyCO2} → {scanResult.after.estimatedMonthlyCO2}
+                    {displayResult.before.estimatedMonthlyCO2} → {displayResult.after.estimatedMonthlyCO2}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Cost/month</span>
                   <span style={{ color: 'var(--color-success)' }}>
-                    {scanResult.before.estimatedMonthlyCost} → {scanResult.after.estimatedMonthlyCost}
+                    {displayResult.before.estimatedMonthlyCost} → {displayResult.after.estimatedMonthlyCost}
                   </span>
                 </div>
               </div>
@@ -338,7 +344,7 @@ export default function ReportPage() {
             </Button>
 
             <p className="text-xs text-center" style={{ color: 'var(--color-text-faint)' }}>
-              Scan ID: {scanResult.scanId.slice(0, 8)}…
+              {planResult ? 'Plan ID' : 'Scan ID'}: {'planId' in displayResult ? displayResult.planId.slice(0, 8) : displayResult.scanId.slice(0, 8)}…
             </p>
           </motion.div>
         </div>

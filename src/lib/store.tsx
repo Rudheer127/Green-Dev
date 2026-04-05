@@ -8,6 +8,9 @@ const initialState: AppState = {
   deploymentConfig: {},
   scanResult: null,
   scanId: null,
+  projectIdea: '',
+  wantSuggestedSetup: false,
+  planResult: null,
 };
 
 function appReducer(state: AppState, action: AppAction): AppState {
@@ -20,6 +23,12 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, scanResult: action.payload, scanId: action.payload.scanId };
     case 'SET_SCAN_ID':
       return { ...state, scanId: action.payload };
+    case 'SET_PROJECT_IDEA':
+      return { ...state, projectIdea: action.payload };
+    case 'SET_WANT_SUGGESTED_SETUP':
+      return { ...state, wantSuggestedSetup: action.payload };
+    case 'SET_PLAN_RESULT':
+      return { ...state, planResult: action.payload };
     case 'RESET_ALL':
       return initialState;
     default:

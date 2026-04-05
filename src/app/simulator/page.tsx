@@ -337,10 +337,11 @@ const DEFAULT_ALT: SimulatorConfig = {
 };
 
 export default function SimulatorPage() {
-  const { scanResult } = useAppState();
+  const { scanResult, planResult } = useAppState();
+  const displayResult = scanResult || planResult;
   const router = useRouter();
 
-  // Pre-fill current from scan result if available
+  // Pre-fill current from result if available
   const initialCurrent: SimulatorConfig = scanResult ? {
     cloudProvider: (scanResult.detectedStack.cloudProvider || 'AWS') as CloudProvider,
     cloudService: 'EC2',
@@ -349,6 +350,14 @@ export default function SimulatorPage() {
     frontendFramework: (scanResult.detectedStack.frontendFramework || 'React') as FrontendFramework,
     cicdTool: 'GitHub Actions',
     hasCaching: false,
+  } : planResult ? {
+    cloudProvider: (planResult.effectiveConfig?.cloudProvider || planResult.suggestedStack?.cloudProvider || 'AWS') as CloudProvider,
+    cloudService: (planResult.effectiveConfig?.cloudService || planResult.suggestedStack?.cloudService || 'EC2') as CloudService,
+    region: (planResult.effectiveConfig?.region || 'us-east-1'),
+    isServerless: planResult.effectiveConfig?.isServerless ?? planResult.suggestedStack?.isServerless ?? false,
+    frontendFramework: (planResult.effectiveConfig?.frontendFramework || planResult.suggestedStack?.frontendFramework || 'React') as FrontendFramework,
+    cicdTool: (planResult.effectiveConfig?.cicdTool || planResult.suggestedStack?.cicdTool || 'GitHub Actions') as CICDTool,
+    hasCaching: planResult.effectiveConfig?.hasCaching ?? planResult.suggestedStack?.hasCaching ?? false,
   } : DEFAULT_CURRENT;
 
   const [current, setCurrent] = useState<SimulatorConfig>(initialCurrent);
@@ -368,7 +377,7 @@ export default function SimulatorPage() {
         body: JSON.stringify({
           current,
           alternative,
-          repoName: scanResult?.repoName || 'your project',
+          repoName: scanResult ? scanResult.repoName : 'your project plan',
         }),
       });
       const json = await res.json();
@@ -403,9 +412,9 @@ export default function SimulatorPage() {
       <main id="main-content" className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 space-y-6">
         <div className="flex items-center justify-between">
           <BackButton href="/results" label="Back to Results" />
-          {scanResult && (
+          {displayResult && (
             <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'var(--color-primary-tint)', color: 'var(--color-primary)' }}>
-              Comparing against: {scanResult.repoName}
+              Comparing against: {scanResult ? scanResult.repoName : 'your idea blueprint'}
             </span>
           )}
         </div>

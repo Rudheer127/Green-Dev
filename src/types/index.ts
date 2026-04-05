@@ -181,6 +181,10 @@ export interface AppState {
   deploymentConfig: Partial<DeploymentConfig>;
   scanResult: AnalysisResult | null;
   scanId: string | null;
+  // Plan workflow
+  projectIdea: string;
+  wantSuggestedSetup: boolean;
+  planResult: PlanResult | null;
 }
 
 export type AppAction =
@@ -188,7 +192,44 @@ export type AppAction =
   | { type: 'SET_DEPLOYMENT_CONFIG'; payload: Partial<DeploymentConfig> }
   | { type: 'SET_SCAN_RESULT'; payload: AnalysisResult }
   | { type: 'SET_SCAN_ID'; payload: string }
-  | { type: 'RESET_ALL' };
+  | { type: 'RESET_ALL' }
+  | { type: 'SET_PROJECT_IDEA'; payload: string }
+  | { type: 'SET_WANT_SUGGESTED_SETUP'; payload: boolean }
+  | { type: 'SET_PLAN_RESULT'; payload: PlanResult };
+
+export interface SuggestedStack {
+  cloudProvider: CloudProvider;
+  cloudService: CloudService;
+  region: string;
+  isServerless: boolean;
+  frontendFramework: FrontendFramework | null;
+  cicdTool: CICDTool | null;
+  hasCaching: boolean;
+  rationale: string;
+  greenPractices: string[];
+}
+
+export interface PlanResult {
+  planId: string;
+  projectIdea: string;
+  scannedAt: string;
+  sustainabilityScore: number;
+  scoreLabel: 'Low Impact' | 'Moderate Impact' | 'High Impact';
+  subscores: Subscore[];
+  issues: Issue[];
+  recommendations: Recommendation[];
+  before: BeforeAfterState;
+  after: BeforeAfterState;
+  report: AIReport;
+  suggestedStack?: SuggestedStack;
+  effectiveConfig: Partial<DeploymentConfig>;
+}
+
+export interface PlanRequest {
+  projectIdea: string;
+  deploymentConfig?: Partial<DeploymentConfig>;
+  wantSuggestedSetup: boolean;
+}
 
 // ── Simulator types ───────────────────────────────────────────────────────────
 export interface SimulatorConfig {

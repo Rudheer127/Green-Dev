@@ -158,17 +158,21 @@ function CellValue({ value, type }: { value: unknown; type: 'text' | 'bool' | 's
 }
 
 export default function ComparePage() {
-  const { scanResult } = useAppState();
+  const { scanResult, planResult } = useAppState();
+  const displayResult = scanResult || planResult;
   const router = useRouter();
 
   useEffect(() => {
-    if (!scanResult) router.replace('/');
-  }, [scanResult, router]);
+    if (!displayResult) router.replace('/');
+  }, [displayResult, router]);
 
-  if (!scanResult) return null;
+  if (!displayResult) return null;
 
-  // Detect current framework from scan
-  const detectedFramework = scanResult.detectedStack?.frontendFramework?.toLowerCase() || '';
+  // Detect current framework from target
+  const detectedFramework = scanResult 
+    ? (scanResult.detectedStack?.frontendFramework?.toLowerCase() || '')
+    : (planResult?.suggestedStack?.frontendFramework?.toLowerCase() || '');
+
   const currentId = detectedFramework.includes('next') ? 'nextjs' :
     detectedFramework.includes('svelte') ? 'svelte' :
     detectedFramework.includes('vue') ? 'vue' :
@@ -201,7 +205,7 @@ export default function ComparePage() {
             Framework Green Comparator
           </h1>
           <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-            Compare the environmental impact of popular frontend frameworks for <span className="font-mono">{scanResult.repoName}</span>.
+            Compare the environmental impact of popular frontend frameworks for <span className="font-mono">{scanResult ? scanResult.repoName : 'your next project'}</span>.
           </p>
         </motion.div>
 

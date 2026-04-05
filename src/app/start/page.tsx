@@ -83,6 +83,19 @@ export default function HomePage() {
             </p>
           </form>
 
+          <div className="pt-2">
+            <button
+              onClick={() => {
+                dispatch({ type: 'RESET_ALL' });
+                router.push('/idea');
+              }}
+              className="text-sm font-medium hover:underline transition-colors"
+              style={{ color: 'var(--color-primary)' }}
+            >
+              Don&apos;t have a project yet? Map out your idea →
+            </button>
+          </div>
+
           {/* Trust strip */}
           <div className="flex flex-wrap items-center justify-center gap-6 pt-4">
             {[
