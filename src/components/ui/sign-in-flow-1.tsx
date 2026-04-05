@@ -401,12 +401,18 @@ function MiniNavbar() {
   }, [isOpen]);
 
   const logoElement = (
-    <div className="relative w-5 h-5 flex items-center justify-center">
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80"></span>
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 left-0 top-1/2 transform -translate-y-1/2 opacity-80"></span>
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 right-0 top-1/2 transform -translate-y-1/2 opacity-80"></span>
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 bottom-0 left-1/2 transform -translate-x-1/2 opacity-80"></span>
- </div>
+    <Link
+      href="/signin"
+      className="relative flex items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      aria-label="Go to sign in"
+    >
+      <span className="relative w-5 h-5 flex items-center justify-center">
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80" />
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 left-0 top-1/2 transform -translate-y-1/2 opacity-80" />
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 right-0 top-1/2 transform -translate-y-1/2 opacity-80" />
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 bottom-0 left-1/2 transform -translate-x-1/2 opacity-80" />
+      </span>
+    </Link>
   );
 
   const navLinksData = [
@@ -504,7 +510,14 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                 className="space-y-8 text-center"
               >
                 <div className="space-y-2">
-                  <h1 className="text-[2.5rem] font-bold leading-[1.1] tracking-tight text-white">GreenDev Coach</h1>
+                  <h1 className="text-[2.5rem] font-bold leading-[1.1] tracking-tight text-white">
+                    <Link
+                      href="/signin"
+                      className="inline-block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black hover:text-white/90 transition-colors"
+                    >
+                      GreenDev Coach
+                    </Link>
+                  </h1>
                   <p className="text-[1.4rem] text-white/70 font-light">Scan your repo. Cut your carbon.</p>
                 </div>
 
