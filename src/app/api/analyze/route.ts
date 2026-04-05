@@ -149,40 +149,14 @@ export async function POST(req: NextRequest) {
       )
     ).filter(Boolean) as { path: string; content: string }[];
 
-    // 5. Run all analysis engines + AI code analysis in parallel
-    const [ciIssues, dockerIssues, assetIssues, computeIssues, regionIssues, codeAnalysisRaw] = await Promise.all([
+    // 5. Run heuristic analysis engines (synchronous — fast)
+    const [ciIssues, dockerIssues, assetIssues, computeIssues, regionIssues] = await Promise.all([
       Promise.resolve(analyzeCICD(workflowContents)),
       Promise.resolve(analyzeDocker(dockerfileResult.data, hasDockerignore)),
       Promise.resolve(analyzeAssets(packageJsonResult.data, tree)),
       Promise.resolve(analyzeCompute(deploymentConfig as any)),
       Promise.resolve(analyzeRegion(deploymentConfig.region, deploymentConfig.cloudProvider)),
-      sourceFiles.length > 0
-        ? invokeClaudeSafe(
-            buildCodeAnalysisPrompt(sourceFiles, repoUrl, deploymentConfig.frontendFramework, metaResult.data?.language),
-            '[]'
-          )
-        : Promise.resolve('[]'),
     ]);
-
-    // Parse AI-detected issues
-    let aiIssues: Issue[] = [];
-    try {
-      const parsed = JSON.parse(codeAnalysisRaw);
-      if (Array.isArray(parsed)) {
-        aiIssues = parsed
-          .filter((item: any) => item && typeof item.title === 'string')
-          .map((item: any) => ({
-            id: `ai-${(item.title as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)}`,
-            category: (['compute', 'assets', 'dependencies', 'ci-cd', 'storage', 'networking'].includes(item.category) ? item.category : 'compute') as Issue['category'],
-            title: item.title as string,
-            description: (item.description as string) || '',
-            impact: (['HIGH', 'MEDIUM', 'LOW'].includes(item.impact) ? item.impact : 'LOW') as Issue['impact'],
-            affectedFiles: Array.isArray(item.affectedFiles) ? item.affectedFiles : undefined,
-          }));
-      }
-    } catch {
-      // JSON parse failed — skip AI issues
-    }
 
     const allIssues: Issue[] = [
       ...ciIssues,
@@ -190,7 +164,6 @@ export async function POST(req: NextRequest) {
       ...assetIssues,
       ...computeIssues,
       ...regionIssues,
-      ...aiIssues,
     ];
 
     console.log(`[API /analyze] Found ${allIssues.length} issues across all engines.`);
@@ -244,18 +217,48 @@ export async function POST(req: NextRequest) {
       },
     };
 
-    console.log('[API /analyze] Invoking Bedrock for reports...');
+    console.log('[API /analyze] Invoking Bedrock for reports + code analysis...');
     const startTimeBedrock = Date.now();
-    const [plainEnglish, technical, sustainability, pitch] = await Promise.all([
+    const [plainEnglish, technical, sustainability, pitch, codeAnalysisRaw] = await Promise.all([
       invokeClaudeSafe(buildPlainEnglishPrompt(partialResult as AnalysisResult), PE_FALLBACK.replace('{score}', String(score)).replace('{count}', String(allIssues.length))),
       invokeClaudeSafe(buildTechnicalPrompt(partialResult as AnalysisResult), TECH_FALLBACK),
       invokeClaudeSafe(buildSustainabilityPrompt(partialResult as AnalysisResult), SUST_FALLBACK.replace('${0}', before.estimatedMonthlyCO2)),
       invokeClaudeSafe(buildPitchPrompt(partialResult as AnalysisResult), PITCH_FALLBACK),
+      sourceFiles.length > 0
+        ? invokeClaudeSafe(
+            buildCodeAnalysisPrompt(sourceFiles, repoUrl, deploymentConfig.frontendFramework, metaResult.data?.language),
+            '[]'
+          )
+        : Promise.resolve('[]'),
     ]);
     console.log(`[API /analyze] Bedrock finished in ${Date.now() - startTimeBedrock}ms`);
 
+    // Parse AI code-level issues and merge into the issue list
+    let aiIssues: Issue[] = [];
+    try {
+      const parsed = JSON.parse(codeAnalysisRaw);
+      if (Array.isArray(parsed)) {
+        aiIssues = parsed
+          .filter((item: any) => item && typeof item.title === 'string')
+          .map((item: any) => ({
+            id: `ai-${(item.title as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)}`,
+            category: (['compute', 'assets', 'dependencies', 'ci-cd', 'storage', 'networking'].includes(item.category)
+              ? item.category
+              : 'compute') as Issue['category'],
+            title: item.title as string,
+            description: (item.description as string) || '',
+            impact: (['HIGH', 'MEDIUM', 'LOW'].includes(item.impact) ? item.impact : 'LOW') as Issue['impact'],
+            affectedFiles: Array.isArray(item.affectedFiles) ? item.affectedFiles : undefined,
+          }));
+      }
+    } catch {
+      // JSON parse failed — skip AI issues silently
+    }
+    console.log(`[API /analyze] AI code analysis found ${aiIssues.length} additional issues.`);
+
     const result: AnalysisResult = {
       ...partialResult,
+      issues: [...allIssues, ...aiIssues],
       report: { plainEnglish, technical, sustainability, pitch },
     };
 
