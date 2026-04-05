@@ -3,7 +3,7 @@
 import React, { useState,useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -373,6 +373,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
 };
 
 function MiniNavbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -380,6 +381,16 @@ function MiniNavbar() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  function handleLogoClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname !== '/') return;
+    e.preventDefault();
+    setIsOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.location.hash) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
+  }
 
   useEffect(() => {
     if (shapeTimeoutRef.current) {
@@ -402,12 +413,19 @@ function MiniNavbar() {
   }, [isOpen]);
 
   const logoElement = (
-    <div className="relative w-5 h-5 flex items-center justify-center">
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80"></span>
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 left-0 top-1/2 transform -translate-y-1/2 opacity-80"></span>
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 right-0 top-1/2 transform -translate-y-1/2 opacity-80"></span>
-    <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 bottom-0 left-1/2 transform -translate-x-1/2 opacity-80"></span>
- </div>
+    <Link
+      href="/"
+      onClick={handleLogoClick}
+      className="relative flex items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      aria-label="Back to top — GreenDev Coach home"
+    >
+      <span className="relative w-5 h-5 flex items-center justify-center">
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 top-0 left-1/2 transform -translate-x-1/2 opacity-80" />
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 left-0 top-1/2 transform -translate-y-1/2 opacity-80" />
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 right-0 top-1/2 transform -translate-y-1/2 opacity-80" />
+        <span className="absolute w-1.5 h-1.5 rounded-full bg-gray-200 bottom-0 left-1/2 transform -translate-x-1/2 opacity-80" />
+      </span>
+    </Link>
   );
 
   const navLinksData = [
@@ -415,20 +433,6 @@ function MiniNavbar() {
     { label: 'How it Works', href: '#how-it-works' },
     { label: 'About', href: '#about' },
   ];
-
-  const signupButtonElement = (
-    <div className="relative group w-full sm:w-auto">
-       <div className="absolute inset-0 -m-2 rounded-full
-                     hidden sm:block
-                     bg-gray-100
-                     opacity-40 filter blur-lg pointer-events-none
-                     transition-all duration-300 ease-out
-                     group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"></div>
-       <a href="/start" className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-semibold text-black bg-gradient-to-br from-gray-100 to-gray-300 rounded-full hover:from-gray-200 hover:to-gray-400 transition-all duration-200 w-full sm:w-auto inline-block text-center">
-         Analyze Repo →
-       </a>
-    </div>
-  );
 
   return (
     <header className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-20
@@ -452,10 +456,6 @@ function MiniNavbar() {
           ))}
         </nav>
 
-        <div className="hidden sm:flex items-center gap-2 sm:gap-3">
-          {signupButtonElement}
-        </div>
-
         <button className="sm:hidden flex items-center justify-center w-8 h-8 text-gray-300 focus:outline-none" onClick={toggleMenu} aria-label={isOpen ? 'Close Menu' : 'Open Menu'}>
           {isOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -474,16 +474,12 @@ function MiniNavbar() {
             </a>
           ))}
         </nav>
-        <div className="flex flex-col items-center space-y-4 mt-4 w-full">
-          {signupButtonElement}
-        </div>
       </div>
     </header>
   );
 }
 
 export const SignInPage = ({ className }: SignInPageProps) => {
-  const router = useRouter(); // Route hook
   const [initialCanvasVisible, setInitialCanvasVisible] = useState(true);
 
 
@@ -527,7 +523,14 @@ export const SignInPage = ({ className }: SignInPageProps) => {
                 className="space-y-8 text-center"
               >
                 <div className="space-y-2">
-                  <h1 className="text-[2.5rem] font-bold leading-[1.1] tracking-tight text-white">GreenDev Coach</h1>
+                  <h1 className="text-[2.5rem] font-bold leading-[1.1] tracking-tight text-white">
+                    <Link
+                      href="/signin"
+                      className="inline-block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black hover:text-white/90 transition-colors"
+                    >
+                      GreenDev Coach
+                    </Link>
+                  </h1>
                   <p className="text-[1.4rem] text-white/70 font-light">Scan your repo. Cut your carbon.</p>
                 </div>
 
